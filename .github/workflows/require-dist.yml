@@ -1,0 +1,24 @@
+name: Require Distribution Build
+on:
+  pull_request_target:
+    branches:
+      - "main"
+    paths:
+      - "/src/**"
+      - "!dist/index.js"
+
+jobs:
+  issue-warning:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Hello there!\n\nThank you for your interest in contributing. However, it looks like you have made changes to the action's code without including an updated distribution build. Please run `npm run package` on your local version of this branch, commit the new `dist/index.js` file, and push it to this PR."
+            });
+          core.setFailed("Missing Distribution Build.");
