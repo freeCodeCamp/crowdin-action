@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint src --max-warnings 0",
-    "package": "ncc build src/index.ts -o dist/index.js",
+    "package": "ncc build src/index.ts -o dist",
     "start": "echo 'This is a GitHub Action and is not meant to run locally.'",
     "test": "echo 'No tests yet!'"
   },
