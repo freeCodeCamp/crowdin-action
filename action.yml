@@ -5,6 +5,7 @@ runs:
   using: "node16"
   main: "dist/index.js"
 env:
+  # These are required for the action to run.
   CROWDIN_PERSONAL_TOKEN:
     description: API token for Crowdin.
     required: true
@@ -17,12 +18,27 @@ env:
   PLUGIN:
     description: Name of the plugin/module to run.
     required: true
+  # These are used for hiding and unhiding specific strings.
   FILE_NAME:
-    description: Used for hiding/unhiding specific string, the name of the file where the string is found.
+    description: The name of the file where the string is found.
     required: false
   STRING_CONTENT:
-    description: Used for hiding/unhiding specific string, the content of the string.
+    description: The content of the string.
     required: false
+  # This is used for deleting files from Crowdin, or for converting the chinese files.
   FILE_PATH:
-    description: Used for removing the deleted files from Crowdin
+    description: Relative path for files to recursively handle.
+    required: false
+  # These are all used for the commit plugin.
+  GH_USERNAME:
+    description: The username of the GitHub account to commit from.
+    required: false
+  GH_EMAIL:
+    description: The email of the GitHub account to commit from.
+    required: false
+  GH_BRANCH:
+    description: The branch to commit to.
+    required: false
+  GH_MESSAGE:
+    description: The message to use when generating the commit.
     required: false
