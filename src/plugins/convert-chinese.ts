@@ -20,16 +20,12 @@ const getFiles = async (directory: string, fileList: string[] = []) => {
 
 /**
  * Module to convert Simplified Chinese files to Traditional Chinese.
+ *
+ * @param {string} directory The directory to convert.
  */
-export const convertChinese = async () => {
+export const convertChinese = async (directory: string) => {
   console.info("Getting file list...");
-  const curriculum = await getFiles(
-    join(process.cwd(), "curriculum", "challenges", "chinese")
-  );
-  const client = await getFiles(
-    join(process.cwd(), "client", "i18n", "locales", "chinese")
-  );
-  const files = [...curriculum, ...client];
+  const files = await getFiles(join(process.cwd(), directory));
   for (const file of files) {
     console.info(`Converting ${file}...`);
     const fileText = await readFile(file, "utf-8");

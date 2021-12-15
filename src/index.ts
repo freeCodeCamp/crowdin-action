@@ -5,6 +5,7 @@ import { hideCurriculumStrings } from "./plugins/hide-curriculum-strings";
 import { hideSpecificString } from "./plugins/hide-specific-string";
 import { removeDeletedFiles } from "./plugins/remove-deleted-files";
 import { unhideSpecificString } from "./plugins/unhide-specific-string";
+import { checkPaths } from "./utils/check-paths";
 import { generateConfig } from "./utils/generate-config";
 import { validateEnvironment } from "./utils/validate-environment";
 
@@ -31,6 +32,9 @@ import { validateEnvironment } from "./utils/validate-environment";
   }
 
   switch (plugin) {
+    case "check-paths":
+      await checkPaths();
+      break;
     case "generate-config":
       if (!process.env.PROJECT_NAME) {
         setFailed("Missing project name.");
@@ -39,7 +43,11 @@ import { validateEnvironment } from "./utils/validate-environment";
       setOutput("config", generateConfig(process.env.PROJECT_NAME));
       break;
     case "convert-chinese":
-      await convertChinese();
+      if (!process.env.FILE_PATH) {
+        setFailed("Missing file path.");
+        break;
+      }
+      await convertChinese(process.env.FILE_PATH);
       break;
     case "hide-curriculum-strings":
       await hideCurriculumStrings(projectId);
