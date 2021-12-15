@@ -3,7 +3,7 @@ description: "A collection of tools to manage freeCodeCamp's integrations with C
 
 runs:
   using: "node16"
-  main: "./prod/index.js"
+  main: "./dist/index.js"
 env:
   CROWDIN_PERSONAL_TOKEN:
     description: API token for Crowdin.
