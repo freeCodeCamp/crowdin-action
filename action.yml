@@ -1,0 +1,6 @@
+name: "Crowdin Integration Tools"
+description: "A collection of tools to manage freeCodeCamp's integrations with Crowdin."
+
+runs:
+  using: 'node16'
+  main: './prod/index.js'
