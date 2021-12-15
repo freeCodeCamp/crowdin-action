@@ -19,7 +19,7 @@ jobs:
               repo: context.payload.repository.name,
               pull_number: context.payload.pull_request.number,
             });
-            if (files.data[0].filename !== "dist/index.js") {
+            if (!files.data.find(file => file.filename === "dist/index.js")) {
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
