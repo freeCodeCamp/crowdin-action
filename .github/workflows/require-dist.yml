@@ -5,7 +5,6 @@ on:
       - "main"
     paths:
       - "src/**"
-      - "!dist/index.js"
 
 jobs:
   issue-warning:
@@ -15,10 +14,17 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "Hello there!\n\nThank you for your interest in contributing. However, it looks like you have made changes to the action's code without including an updated distribution build. Please run `npm run package` on your local version of this branch, commit the new `dist/index.js` file, and push it to this PR."
+            const files = await github.rest.pulls.listFiles({
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number,
             });
-          core.setFailed("Missing Distribution Build.");
+            if (files.data[0].filename !== "dist/index.js") {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "Hello there!\n\nThank you for your interest in contributing. However, it looks like you have made changes to the action's code without including an updated distribution build. Please run `npm run package` on your local version of this branch, commit the new `dist/index.js` file, and push it to this PR."
+              });
+            core.setFailed("Missing Distribution Build.");
+            };
