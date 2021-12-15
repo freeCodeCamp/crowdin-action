@@ -4,7 +4,10 @@
   "description": "Utilities for uploading/downloading with Crowdin",
   "main": "prod/index.js",
   "scripts": {
-    "test": "echo 'no tests yet'"
+    "build": "tsc",
+    "lint": "eslint src --max-warnings 0",
+    "start": "echo 'This is a GitHub Action and is not meant to run locally.'",
+    "test": "echo 'No tests yet!'"
   },
   "repository": {
     "type": "git",
