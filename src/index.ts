@@ -12,6 +12,7 @@ import { unhideSpecificString } from "./plugins/unhide-specific-string";
 import { validateEnvironment } from "./utils/validate-environment";
 
 (async () => {
+  console.log("This should fail the custom action.");
   const validEnvironment = validateEnvironment();
 
   if (!validEnvironment) {
