@@ -1,12 +1,12 @@
-import { setFailed, setOutput } from "@actions/core";
+import { setFailed } from "@actions/core";
 
+import { checkPaths } from "./plugins/check-paths";
 import { convertChinese } from "./plugins/convert-chinese";
+import { generateConfig } from "./plugins/generate-config";
 import { hideCurriculumStrings } from "./plugins/hide-curriculum-strings";
 import { hideSpecificString } from "./plugins/hide-specific-string";
 import { removeDeletedFiles } from "./plugins/remove-deleted-files";
 import { unhideSpecificString } from "./plugins/unhide-specific-string";
-import { checkPaths } from "./utils/check-paths";
-import { generateConfig } from "./utils/generate-config";
 import { validateEnvironment } from "./utils/validate-environment";
 
 (async () => {
