@@ -42,3 +42,35 @@ env:
   GH_MESSAGE:
     description: The message to use when generating the commit.
     required: false
+  # These are used in the pull request plugin.
+  GH_TOKEN:
+    description: 'PAT with write access to create PRs'
+    required: false
+  BRANCH:
+    description: 'Branch name to which commits are made'
+    required: false
+  REPOSITORY:
+    description: 'owner and repo name specified as ownerName/repoName'
+    required: false
+  BASE:
+    description: 'base branch name'
+    default: 'main'
+    required: false
+  TITLE:
+    description: 'PR title'
+    required: false
+  BODY:
+    description: 'PR body text'
+    required: false
+  LABELS:
+    description: 'PR labels'
+    required: false
+  REVIEWERS:
+    description: 'Requested PR reviewers'
+    required: false
+  TEAM_REVIEWERS:
+    # Note that this should be a slug, not a full tag
+    # So a requested review from @freeCodeCamp/dev-team
+    # Should be passed only as 'dev-team'
+    description: 'Requested organization team PR reviewers'
+    required: false
