@@ -21,56 +21,56 @@ env:
   # These are used for hiding and unhiding specific strings.
   FILE_NAME:
     description: The name of the file where the string is found.
-    required: false
+    required: true
   STRING_CONTENT:
     description: The content of the string.
-    required: false
+    required: true
   # This is used for deleting files from Crowdin, or for converting the chinese files.
   FILE_PATH:
     description: Relative path for files to recursively handle.
-    required: false
+    required: true
   # These are all used for the commit plugin.
   GH_USERNAME:
     description: The username of the GitHub account to commit from.
-    required: false
+    required: true
   GH_EMAIL:
     description: The email of the GitHub account to commit from.
-    required: false
+    required: true
   GH_BRANCH:
     description: The branch to commit to.
-    required: false
+    required: true
   GH_MESSAGE:
     description: The message to use when generating the commit.
-    required: false
+    required: true
   # These are used in the pull request plugin.
   GH_TOKEN:
-    description: 'PAT with write access to create PRs'
-    required: false
+    description: "PAT with write access to create PRs"
+    required: true
   BRANCH:
-    description: 'Branch name to which commits are made'
-    required: false
+    description: "Branch name to which commits are made"
+    required: true
   REPOSITORY:
-    description: 'owner and repo name specified as ownerName/repoName'
-    required: false
+    description: "owner and repo name specified as ownerName/repoName"
+    required: true
   BASE:
-    description: 'base branch name'
-    default: 'main'
+    description: "base branch name"
+    default: "main"
     required: false
   TITLE:
-    description: 'PR title'
-    required: false
+    description: "PR title"
+    required: true
   BODY:
-    description: 'PR body text'
-    required: false
+    description: "PR body text"
+    required: true
   LABELS:
-    description: 'PR labels'
+    description: "PR labels, comma-separated"
     required: false
   REVIEWERS:
-    description: 'Requested PR reviewers'
+    description: "Requested PR reviewers, comma-separated"
     required: false
   TEAM_REVIEWERS:
     # Note that this should be a slug, not a full tag
     # So a requested review from @freeCodeCamp/dev-team
     # Should be passed only as 'dev-team'
-    description: 'Requested organization team PR reviewers'
+    description: "Requested organization team PR reviewers"
     required: false
