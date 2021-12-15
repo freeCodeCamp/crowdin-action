@@ -156,4 +156,5 @@ export const CrowdinStringHelper = {
   shouldHide,
   changeHiddenStatus,
   updateFileString,
+  updateFileStrings,
 };

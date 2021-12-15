@@ -2,5 +2,27 @@ name: "Crowdin Integration Tools"
 description: "A collection of tools to manage freeCodeCamp's integrations with Crowdin."
 
 runs:
-  using: 'node16'
-  main: './prod/index.js'
+  using: "node16"
+  main: "./prod/index.js"
+env:
+  CROWDIN_PERSONAL_TOKEN:
+    description: API token for Crowdin.
+    required: true
+  CROWDIN_API_URL:
+    description: API URL for Crowdin.
+    required: true
+  CROWDIN_PROJECT_ID:
+    description: ID for the project on Crowdin.
+    required: true
+  PLUGIN:
+    description: Name of the plugin/module to run.
+    required: true
+  FILE_NAME:
+    description: Used for hiding/unhiding specific string, the name of the file where the string is found.
+    required: false
+  STRING_CONTENT:
+    description: Used for hiding/unhiding specific string, the content of the string.
+    required: false
+  FILE_PATH:
+    description: Used for removing the deleted files from Crowdin
+    required: false
