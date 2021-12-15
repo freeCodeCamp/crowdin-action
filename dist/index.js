@@ -17101,12 +17101,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createPullRequest = void 0;
-const github_1 = __importDefault(__nccwpck_require__(5438));
+const github_1 = __nccwpck_require__(5438);
 /**
  * Module to create a pull request.
  *
@@ -17132,7 +17129,7 @@ const createPullRequest = (token, branch, repository, base = "main", title, body
         if (!owner || !repo) {
             return false;
         }
-        const githubClient = github_1.default.getOctokit(token);
+        const githubClient = (0, github_1.getOctokit)(token);
         const doesBranchExist = yield githubClient.rest.repos
             .getBranch({ owner, repo, branch })
             .catch(() => console.info("Branch does not exist."));

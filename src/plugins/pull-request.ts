@@ -1,4 +1,4 @@
-import gitHub from "@actions/github";
+import { getOctokit } from "@actions/github";
 
 /**
  * Module to create a pull request.
@@ -37,7 +37,7 @@ export const createPullRequest = async (
       return false;
     }
 
-    const githubClient = gitHub.getOctokit(token);
+    const githubClient = getOctokit(token);
 
     const doesBranchExist = await githubClient.rest.repos
       .getBranch({ owner, repo, branch })
