@@ -1,10 +1,12 @@
 import { setFailed } from "@actions/core";
 
 import { checkPaths } from "./plugins/check-paths";
+import { commitChanges } from "./plugins/commit-changes";
 import { convertChinese } from "./plugins/convert-chinese";
 import { generateConfig } from "./plugins/generate-config";
 import { hideCurriculumStrings } from "./plugins/hide-curriculum-strings";
 import { hideSpecificString } from "./plugins/hide-specific-string";
+import { createPullRequest } from "./plugins/pull-request";
 import { removeDeletedFiles } from "./plugins/remove-deleted-files";
 import { unhideSpecificString } from "./plugins/unhide-specific-string";
 import { validateEnvironment } from "./utils/validate-environment";
@@ -35,12 +37,22 @@ import { validateEnvironment } from "./utils/validate-environment";
     case "check-paths":
       await checkPaths();
       break;
-    case "generate-config":
-      if (!process.env.PROJECT_NAME) {
-        setFailed("Missing project name.");
+    case "commit-changes":
+      if (
+        !process.env.GH_USERNAME ||
+        !process.env.GH_EMAIL ||
+        !process.env.GH_BRANCH ||
+        !process.env.GH_MESSAGE
+      ) {
+        setFailed("Missing commit configuration data.");
         break;
       }
-      await generateConfig(process.env.PROJECT_NAME);
+      await commitChanges(
+        process.env.GH_USERNAME,
+        process.env.GH_EMAIL,
+        process.env.GH_BRANCH,
+        process.env.GH_MESSAGE
+      );
       break;
     case "convert-chinese":
       if (!process.env.FILE_PATH) {
@@ -48,6 +60,13 @@ import { validateEnvironment } from "./utils/validate-environment";
         break;
       }
       await convertChinese(process.env.FILE_PATH);
+      break;
+    case "generate-config":
+      if (!process.env.PROJECT_NAME) {
+        setFailed("Missing project name.");
+        break;
+      }
+      await generateConfig(process.env.PROJECT_NAME);
       break;
     case "hide-curriculum-strings":
       await hideCurriculumStrings(projectId);
@@ -62,6 +81,32 @@ import { validateEnvironment } from "./utils/validate-environment";
         process.env.FILE_NAME,
         process.env.STRING_CONTENT
       );
+      break;
+    case "pull-request":
+      if (
+        !process.env.GH_TOKEN ||
+        !process.env.BRANCH ||
+        !process.env.REPOSITORY ||
+        !process.env.BASE ||
+        !process.env.TITLE ||
+        !process.env.BODY
+      ) {
+        setFailed("Missing pull request configuration data.");
+        break;
+      }
+      (await createPullRequest(
+        process.env.GH_TOKEN,
+        process.env.BRANCH,
+        process.env.REPOSITORY,
+        process.env.BASE,
+        process.env.TITLE,
+        process.env.BODY,
+        process.env.LABELS,
+        process.env.REVIEWERS,
+        process.env.TEAM_REVIEWERS
+      ))
+        ? null
+        : setFailed("Failed to create pull request.");
       break;
     case "remove-deleted-files":
       if (!process.env.FILE_PATH) {
