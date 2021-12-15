@@ -40,7 +40,7 @@ import { validateEnvironment } from "./utils/validate-environment";
         setFailed("Missing project name.");
         break;
       }
-      setOutput("config", generateConfig(process.env.PROJECT_NAME));
+      await generateConfig(process.env.PROJECT_NAME);
       break;
     case "convert-chinese":
       if (!process.env.FILE_PATH) {

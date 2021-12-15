@@ -13863,7 +13863,7 @@ const validate_environment_1 = __nccwpck_require__(3724);
                 (0, core_1.setFailed)("Missing project name.");
                 break;
             }
-            (0, core_1.setOutput)("config", (0, generate_config_1.generateConfig)(process.env.PROJECT_NAME));
+            yield (0, generate_config_1.generateConfig)(process.env.PROJECT_NAME);
             break;
         case "convert-chinese":
             if (!process.env.FILE_PATH) {
@@ -14409,22 +14409,34 @@ exports.CrowdinFilesHelper = {
 /***/ }),
 
 /***/ 1097:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateConfig = void 0;
+const child_process_1 = __nccwpck_require__(2081);
+const util_1 = __nccwpck_require__(3837);
 /**
- * Constructs a path name based on a project name to point to the
- * Crowdin config file for that project.
+ * Locates the correct config file for the provided project, and copies it to
+ * the current file system.
  *
  * @param {string} projectName The name of the project to load a config for.
- * @returns {string} The path to the config yaml file.
  */
-const generateConfig = (projectName) => {
-    return `${process.cwd()}/prod/configs/${projectName}.yml`;
-};
+const generateConfig = (projectName) => __awaiter(void 0, void 0, void 0, function* () {
+    const asyncExec = (0, util_1.promisify)(child_process_1.exec);
+    const configPath = __nccwpck_require__.ab + "configs/" + projectName + '.yml';
+    yield asyncExec(`cp ${configPath} ./crowdin-config.yml`);
+});
 exports.generateConfig = generateConfig;
 
 

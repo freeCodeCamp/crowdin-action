@@ -1,10 +1,14 @@
+import { exec } from "child_process";
+import { promisify } from "util";
+
 /**
- * Constructs a path name based on a project name to point to the
- * Crowdin config file for that project.
+ * Locates the correct config file for the provided project, and copies it to
+ * the current file system.
  *
  * @param {string} projectName The name of the project to load a config for.
- * @returns {string} The path to the config yaml file.
  */
-export const generateConfig = (projectName: string) => {
-  return `${process.cwd()}/prod/configs/${projectName}.yml`;
+export const generateConfig = async (projectName: string) => {
+  const asyncExec = promisify(exec);
+  const configPath = `${__dirname}/../configs/${projectName}.yml`;
+  await asyncExec(`cp ${configPath} ./crowdin-config.yml`);
 };
