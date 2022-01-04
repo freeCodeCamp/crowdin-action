@@ -52,7 +52,7 @@ const getStrings = async (projectId: number, fileId?: number) => {
   let offset = 0;
   let strings: CrowdinStringsGET["data"] = [];
   while (!done) {
-    let endPoint = `projects/${projectId}/files/${fileId}/strings?limit=500&offset=${offset}`;
+    let endPoint = `projects/${projectId}/strings?limit=500&offset=${offset}`;
     if (fileId) {
       endPoint += `&file_id=${fileId}`;
     }

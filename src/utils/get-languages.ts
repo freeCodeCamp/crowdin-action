@@ -11,7 +11,7 @@ import { makeRequest } from "./make-request";
  */
 export const getLanguages = async (projectId: string) => {
   const headers = { ...authHeader };
-  const endPoint = `/projects/${projectId}?limit=500`;
+  const endPoint = `projects/${projectId}?limit=500`;
   const response = await makeRequest<CrowdinProjectGET>({
     method: "GET",
     endPoint,
