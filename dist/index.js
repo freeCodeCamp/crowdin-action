@@ -17548,6 +17548,7 @@ const makeRequest = ({ method, endPoint, contentType = "application/json", accep
     else {
         newBody = body;
     }
+    console.table({ newHeaders, method, body, apiUrl });
     const response = yield (0, node_fetch_1.default)(apiUrl, {
         headers: newHeaders,
         method,
