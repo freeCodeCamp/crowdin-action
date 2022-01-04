@@ -17622,7 +17622,7 @@ const getStrings = (projectId, fileId) => __awaiter(void 0, void 0, void 0, func
     let offset = 0;
     let strings = [];
     while (!done) {
-        let endPoint = `projects/${projectId}/files/${fileId}/strings?limit=500&offset=${offset}`;
+        let endPoint = `projects/${projectId}/strings?limit=500&offset=${offset}`;
         if (fileId) {
             endPoint += `&file_id=${fileId}`;
         }
