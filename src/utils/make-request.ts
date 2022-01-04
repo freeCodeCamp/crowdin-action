@@ -44,6 +44,8 @@ export const makeRequest = async <S>({
     newBody = body as string;
   }
 
+  console.table({ newHeaders, method, body, apiUrl });
+
   const response = await fetch(apiUrl, {
     headers: newHeaders,
     method,
