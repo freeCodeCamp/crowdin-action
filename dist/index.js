@@ -17629,7 +17629,7 @@ const getStrings = (projectId, fileId) => __awaiter(void 0, void 0, void 0, func
     while (!done) {
         let endPoint = `projects/${projectId}/strings?limit=500&offset=${offset}`;
         if (fileId) {
-            endPoint += `&file_id=${fileId}`;
+            endPoint += `&fileId=${fileId}`;
         }
         const response = yield (0, make_request_1.makeRequest)({
             method: "get",
