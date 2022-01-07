@@ -21,7 +21,11 @@ export const hideRenpyStrings = async (projectId: number) => {
       continue;
     }
     for (const string of fileStrings) {
-      if (!string.data.text.startsWith("new")) {
+      if (
+        string.data.text.startsWith("translate") ||
+        string.data.text.startsWith("old") ||
+        string.data.text.startsWith("#")
+      ) {
         console.log(`hiding string: ${string.data.text}`);
         await CrowdinStringHelper.changeHiddenStatus(
           projectId,

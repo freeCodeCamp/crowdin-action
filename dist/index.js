@@ -17075,7 +17075,9 @@ const hideRenpyStrings = (projectId) => __awaiter(void 0, void 0, void 0, functi
             continue;
         }
         for (const string of fileStrings) {
-            if (!string.data.text.startsWith("new")) {
+            if (string.data.text.startsWith("translate") ||
+                string.data.text.startsWith("old") ||
+                string.data.text.startsWith("#")) {
                 console.log(`hiding string: ${string.data.text}`);
                 yield strings_1.CrowdinStringHelper.changeHiddenStatus(projectId, string.data.id, true);
             }
