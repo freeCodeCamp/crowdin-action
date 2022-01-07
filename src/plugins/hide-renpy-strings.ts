@@ -32,6 +32,13 @@ export const hideRenpyStrings = async (projectId: number) => {
           string.data.id,
           true
         );
+      } else {
+        console.log(`keeping string: ${string.data.text}`);
+        await CrowdinStringHelper.changeHiddenStatus(
+          projectId,
+          string.data.id,
+          false
+        );
       }
     }
   }
