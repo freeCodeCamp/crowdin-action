@@ -109,11 +109,11 @@ import { validateEnvironment } from "./utils/validate-environment";
         : setFailed("Failed to create pull request.");
       break;
     case "remove-deleted-files":
-      if (!process.env.FILE_PATH) {
+      if (!process.env.FILE_PATHS) {
         setFailed("Missing file path.");
         break;
       }
-      await removeDeletedFiles(projectId, process.env.FILE_PATH);
+      await removeDeletedFiles(projectId, JSON.parse(process.env.FILE_PATHS));
       break;
     case "unhide-string":
       if (!process.env.FILE_NAME || !process.env.STRING_CONTENT) {

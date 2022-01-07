@@ -16786,11 +16786,11 @@ const validate_environment_1 = __nccwpck_require__(3724);
                 : (0, core_1.setFailed)("Failed to create pull request.");
             break;
         case "remove-deleted-files":
-            if (!process.env.FILE_PATH) {
+            if (!process.env.FILE_PATHS) {
                 (0, core_1.setFailed)("Missing file path.");
                 break;
             }
-            yield (0, remove_deleted_files_1.removeDeletedFiles)(projectId, process.env.FILE_PATH);
+            yield (0, remove_deleted_files_1.removeDeletedFiles)(projectId, JSON.parse(process.env.FILE_PATHS));
             break;
         case "unhide-string":
             if (!process.env.FILE_NAME || !process.env.STRING_CONTENT) {
@@ -17243,22 +17243,26 @@ const getOutputFromShellCommand = (command) => __awaiter(void 0, void 0, void 0,
  * in the source repository.
  *
  * @param {number} projectId The ID of the project to remove files from.
- * @param {string} path The base path for the files to check.
+ * @param {string[]} paths The base paths for the files to check.
  * @returns {boolean} True if files were successfully removed, false if no files were present on Crowdin.
  */
-const removeDeletedFiles = (projectId, path) => __awaiter(void 0, void 0, void 0, function* () {
+const removeDeletedFiles = (projectId, paths) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Cleaning deleted files...");
     const crowdinFiles = yield files_1.CrowdinFilesHelper.getFiles(projectId);
     if (crowdinFiles && crowdinFiles.length) {
-        const shellCommand = `find ${path} -name \\*.*`;
-        const localFiles = yield getOutputFromShellCommand(shellCommand);
-        const localFilesArray = localFiles === null || localFiles === void 0 ? void 0 : localFiles.split("\n");
-        if (localFilesArray === null || localFilesArray === void 0 ? void 0 : localFilesArray.length) {
-            const localFilesMap = localFilesArray.reduce((map, filename) => (Object.assign(Object.assign({}, map), { [filename]: true })), {});
-            for (const { fileId, path: crowdinFilePath } of crowdinFiles) {
-                if (!localFilesMap[crowdinFilePath]) {
-                    yield files_1.CrowdinFilesHelper.deleteFile(projectId, fileId, crowdinFilePath);
-                }
+        let totalFiles = [];
+        for (const path of paths) {
+            const shellCommand = `find ${path} -name \\*.*`;
+            const localFiles = yield getOutputFromShellCommand(shellCommand);
+            const localFilesArray = localFiles === null || localFiles === void 0 ? void 0 : localFiles.split("\n");
+            if (localFilesArray === null || localFilesArray === void 0 ? void 0 : localFilesArray.length) {
+                totalFiles = totalFiles.concat(localFilesArray);
+            }
+        }
+        const localFilesMap = totalFiles.reduce((map, filename) => (Object.assign(Object.assign({}, map), { [filename]: true })), {});
+        for (const { fileId, path: crowdinFilePath } of crowdinFiles) {
+            if (!localFilesMap[crowdinFilePath]) {
+                yield files_1.CrowdinFilesHelper.deleteFile(projectId, fileId, crowdinFilePath);
             }
         }
     }
