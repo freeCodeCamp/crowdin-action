@@ -55,11 +55,11 @@ import { validateEnvironment } from "./utils/validate-environment";
       );
       break;
     case "convert-chinese":
-      if (!process.env.FILE_PATH) {
-        setFailed("Missing file path.");
+      if (!process.env.FILE_PATHS) {
+        setFailed("Missing file paths.");
         break;
       }
-      await convertChinese(process.env.FILE_PATH);
+      await convertChinese(JSON.parse(process.env.FILE_PATHS));
       break;
     case "generate-config":
       if (!process.env.PROJECT_NAME) {
