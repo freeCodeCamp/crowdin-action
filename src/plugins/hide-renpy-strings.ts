@@ -26,6 +26,10 @@ export const hideRenpyStrings = async (projectId: number) => {
         string.data.text.startsWith("old") ||
         string.data.text.startsWith("#")
       ) {
+        if (string.data.isHidden) {
+          console.log(`string already hidden: ${string.data.text}`);
+          continue;
+        }
         console.log(`hiding string: ${string.data.text}`);
         await CrowdinStringHelper.changeHiddenStatus(
           projectId,
@@ -33,6 +37,10 @@ export const hideRenpyStrings = async (projectId: number) => {
           true
         );
       } else {
+        if (!string.data.isHidden) {
+          console.log(`string already visible: ${string.data.text}`);
+          continue;
+        }
         console.log(`keeping string: ${string.data.text}`);
         await CrowdinStringHelper.changeHiddenStatus(
           projectId,

@@ -17078,10 +17078,18 @@ const hideRenpyStrings = (projectId) => __awaiter(void 0, void 0, void 0, functi
             if (string.data.text.startsWith("translate") ||
                 string.data.text.startsWith("old") ||
                 string.data.text.startsWith("#")) {
+                if (string.data.isHidden) {
+                    console.log(`string already hidden: ${string.data.text}`);
+                    continue;
+                }
                 console.log(`hiding string: ${string.data.text}`);
                 yield strings_1.CrowdinStringHelper.changeHiddenStatus(projectId, string.data.id, true);
             }
             else {
+                if (!string.data.isHidden) {
+                    console.log(`string already visible: ${string.data.text}`);
+                    continue;
+                }
                 console.log(`keeping string: ${string.data.text}`);
                 yield strings_1.CrowdinStringHelper.changeHiddenStatus(projectId, string.data.id, false);
             }
