@@ -54,7 +54,7 @@ const getStrings = async (projectId: number, fileId?: number) => {
   while (!done) {
     let endPoint = `projects/${projectId}/strings?limit=500&offset=${offset}`;
     if (fileId) {
-      endPoint += `&file_id=${fileId}`;
+      endPoint += `&fileId=${fileId}`;
     }
     const response = await makeRequest<CrowdinStringsGET>({
       method: "get",

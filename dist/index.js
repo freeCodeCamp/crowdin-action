@@ -16748,11 +16748,11 @@ const validate_environment_1 = __nccwpck_require__(3724);
             yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME, process.env.GH_EMAIL, process.env.GH_BRANCH, process.env.GH_MESSAGE);
             break;
         case "convert-chinese":
-            if (!process.env.FILE_PATH) {
-                (0, core_1.setFailed)("Missing file path.");
+            if (!process.env.FILE_PATHS) {
+                (0, core_1.setFailed)("Missing file paths.");
                 break;
             }
-            yield (0, convert_chinese_1.convertChinese)(process.env.FILE_PATH);
+            yield (0, convert_chinese_1.convertChinese)(JSON.parse(process.env.FILE_PATHS));
             break;
         case "generate-config":
             if (!process.env.PROJECT_NAME) {
@@ -16786,11 +16786,11 @@ const validate_environment_1 = __nccwpck_require__(3724);
                 : (0, core_1.setFailed)("Failed to create pull request.");
             break;
         case "remove-deleted-files":
-            if (!process.env.FILE_PATH) {
+            if (!process.env.FILE_PATHS) {
                 (0, core_1.setFailed)("Missing file path.");
                 break;
             }
-            yield (0, remove_deleted_files_1.removeDeletedFiles)(projectId, process.env.FILE_PATH);
+            yield (0, remove_deleted_files_1.removeDeletedFiles)(projectId, JSON.parse(process.env.FILE_PATHS));
             break;
         case "unhide-string":
             if (!process.env.FILE_NAME || !process.env.STRING_CONTENT) {
@@ -16921,16 +16921,18 @@ const getFiles = (directory, fileList = []) => __awaiter(void 0, void 0, void 0,
 /**
  * Module to convert Simplified Chinese files to Traditional Chinese.
  *
- * @param {string} directory The directory to convert.
+ * @param {string[]} directories The directory to convert.
  */
-const convertChinese = (directory) => __awaiter(void 0, void 0, void 0, function* () {
+const convertChinese = (directories) => __awaiter(void 0, void 0, void 0, function* () {
     console.info("Getting file list...");
-    const files = yield getFiles((0, path_1.join)(process.cwd(), directory));
-    for (const file of files) {
-        console.info(`Converting ${file}...`);
-        const fileText = yield (0, promises_1.readFile)(file, "utf-8");
-        const translatedText = yield node_opencc_1.default.simplifiedToTraditional(fileText);
-        yield (0, fs_extra_1.outputFile)(file.replace("chinese", "chinese-traditional"), translatedText);
+    for (const directory of directories) {
+        const files = yield getFiles((0, path_1.join)(process.cwd(), directory));
+        for (const file of files) {
+            console.info(`Converting ${file}...`);
+            const fileText = yield (0, promises_1.readFile)(file, "utf-8");
+            const translatedText = yield node_opencc_1.default.simplifiedToTraditional(fileText);
+            yield (0, fs_extra_1.outputFile)(file.replace("chinese", "chinese-traditional"), translatedText);
+        }
     }
 });
 exports.convertChinese = convertChinese;
@@ -17243,22 +17245,26 @@ const getOutputFromShellCommand = (command) => __awaiter(void 0, void 0, void 0,
  * in the source repository.
  *
  * @param {number} projectId The ID of the project to remove files from.
- * @param {string} path The base path for the files to check.
+ * @param {string[]} paths The base paths for the files to check.
  * @returns {boolean} True if files were successfully removed, false if no files were present on Crowdin.
  */
-const removeDeletedFiles = (projectId, path) => __awaiter(void 0, void 0, void 0, function* () {
+const removeDeletedFiles = (projectId, paths) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Cleaning deleted files...");
     const crowdinFiles = yield files_1.CrowdinFilesHelper.getFiles(projectId);
     if (crowdinFiles && crowdinFiles.length) {
-        const shellCommand = `find ${path} -name \\*.*`;
-        const localFiles = yield getOutputFromShellCommand(shellCommand);
-        const localFilesArray = localFiles === null || localFiles === void 0 ? void 0 : localFiles.split("\n");
-        if (localFilesArray === null || localFilesArray === void 0 ? void 0 : localFilesArray.length) {
-            const localFilesMap = localFilesArray.reduce((map, filename) => (Object.assign(Object.assign({}, map), { [filename]: true })), {});
-            for (const { fileId, path: crowdinFilePath } of crowdinFiles) {
-                if (!localFilesMap[crowdinFilePath]) {
-                    yield files_1.CrowdinFilesHelper.deleteFile(projectId, fileId, crowdinFilePath);
-                }
+        let totalFiles = [];
+        for (const path of paths) {
+            const shellCommand = `find ${path} -name \\*.*`;
+            const localFiles = yield getOutputFromShellCommand(shellCommand);
+            const localFilesArray = localFiles === null || localFiles === void 0 ? void 0 : localFiles.split("\n");
+            if (localFilesArray === null || localFilesArray === void 0 ? void 0 : localFilesArray.length) {
+                totalFiles = totalFiles.concat(localFilesArray);
+            }
+        }
+        const localFilesMap = totalFiles.reduce((map, filename) => (Object.assign(Object.assign({}, map), { [filename]: true })), {});
+        for (const { fileId, path: crowdinFilePath } of crowdinFiles) {
+            if (!localFilesMap[crowdinFilePath]) {
+                yield files_1.CrowdinFilesHelper.deleteFile(projectId, fileId, crowdinFilePath);
             }
         }
     }
@@ -17623,7 +17629,7 @@ const getStrings = (projectId, fileId) => __awaiter(void 0, void 0, void 0, func
     while (!done) {
         let endPoint = `projects/${projectId}/strings?limit=500&offset=${offset}`;
         if (fileId) {
-            endPoint += `&file_id=${fileId}`;
+            endPoint += `&fileId=${fileId}`;
         }
         const response = yield (0, make_request_1.makeRequest)({
             method: "get",

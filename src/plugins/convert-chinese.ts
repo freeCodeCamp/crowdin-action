@@ -21,18 +21,20 @@ const getFiles = async (directory: string, fileList: string[] = []) => {
 /**
  * Module to convert Simplified Chinese files to Traditional Chinese.
  *
- * @param {string} directory The directory to convert.
+ * @param {string[]} directories The directory to convert.
  */
-export const convertChinese = async (directory: string) => {
+export const convertChinese = async (directories: string) => {
   console.info("Getting file list...");
-  const files = await getFiles(join(process.cwd(), directory));
-  for (const file of files) {
-    console.info(`Converting ${file}...`);
-    const fileText = await readFile(file, "utf-8");
-    const translatedText = await opencc.simplifiedToTraditional(fileText);
-    await outputFile(
-      file.replace("chinese", "chinese-traditional"),
-      translatedText
-    );
+  for (const directory of directories) {
+    const files = await getFiles(join(process.cwd(), directory));
+    for (const file of files) {
+      console.info(`Converting ${file}...`);
+      const fileText = await readFile(file, "utf-8");
+      const translatedText = await opencc.simplifiedToTraditional(fileText);
+      await outputFile(
+        file.replace("chinese", "chinese-traditional"),
+        translatedText
+      );
+    }
   }
 };
