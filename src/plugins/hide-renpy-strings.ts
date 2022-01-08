@@ -1,6 +1,32 @@
 import { CrowdinFilesHelper } from "../utils/files";
 import { CrowdinStringHelper } from "../utils/strings";
 
+const labelNames = [
+  "new",
+  `""`,
+  "player",
+  "kid",
+  "mom",
+  "dad",
+  "mint",
+  "annika",
+  "girl",
+  "boy",
+  "college_boy",
+  "college_girl",
+  "female",
+  "marco",
+  "layla",
+  "cafe_manager",
+  "host",
+  "journalist",
+  "office_worker",
+  "male",
+  "trivia_guy",
+  "interviewer",
+  "npc",
+];
+
 /**
  * Module to hide strings for Renpy translations (such as in LearnToCodeRPG).
  * Hides any string that doesn't start with `new`.
@@ -26,7 +52,8 @@ export const hideRenpyStrings = async (projectId: number) => {
         string.data.text.startsWith("translate") ||
         string.data.text.startsWith("old") ||
         string.data.text.startsWith("#") ||
-        prevStringHidden
+        (prevStringHidden &&
+          labelNames.every((label) => !string.data.text.startsWith(label)))
       ) {
         prevStringHidden = true;
         if (string.data.isHidden) {
