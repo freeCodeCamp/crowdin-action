@@ -5,6 +5,7 @@ import { commitChanges } from "./plugins/commit-changes";
 import { convertChinese } from "./plugins/convert-chinese";
 import { generateConfig } from "./plugins/generate-config";
 import { hideCurriculumStrings } from "./plugins/hide-curriculum-strings";
+import { hideReplitStrings } from "./plugins/hide-replit-strings";
 import { hideSpecificString } from "./plugins/hide-specific-string";
 import { createPullRequest } from "./plugins/pull-request";
 import { removeDeletedFiles } from "./plugins/remove-deleted-files";
@@ -70,6 +71,9 @@ import { validateEnvironment } from "./utils/validate-environment";
       break;
     case "hide-curriculum-strings":
       await hideCurriculumStrings(projectId);
+      break;
+    case "hide-renpy-strings":
+      await hideReplitStrings(projectId);
       break;
     case "hide-string":
       if (!process.env.FILE_NAME || !process.env.STRING_CONTENT) {
