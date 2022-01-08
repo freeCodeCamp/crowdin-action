@@ -72,7 +72,7 @@ import { validateEnvironment } from "./utils/validate-environment";
     case "hide-curriculum-strings":
       await hideCurriculumStrings(projectId);
       break;
-    case "hide-renpy-strings":
+    case "hide-replit-strings":
       await hideReplitStrings(projectId);
       break;
     case "hide-string":
