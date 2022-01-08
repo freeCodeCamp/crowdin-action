@@ -20,12 +20,15 @@ export const hideRenpyStrings = async (projectId: number) => {
     if (!fileStrings || !fileStrings.length) {
       continue;
     }
+    let prevStringHidden = false;
     for (const string of fileStrings) {
       if (
         string.data.text.startsWith("translate") ||
         string.data.text.startsWith("old") ||
-        string.data.text.startsWith("#")
+        string.data.text.startsWith("#") ||
+        prevStringHidden
       ) {
+        prevStringHidden = true;
         if (string.data.isHidden) {
           console.log(`string already hidden: ${string.data.text}`);
           continue;
@@ -37,6 +40,7 @@ export const hideRenpyStrings = async (projectId: number) => {
           true
         );
       } else {
+        prevStringHidden = false;
         if (!string.data.isHidden) {
           console.log(`string already visible: ${string.data.text}`);
           continue;
