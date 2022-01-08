@@ -10,5 +10,6 @@ files:
     {
       "source": "/game/tl/english/**/*.rpy",
       "translation": "/game/tl/%language%/%original_file_name%",
+      "content_segmentation": 0,
     },
   ]
