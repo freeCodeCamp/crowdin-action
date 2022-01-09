@@ -20,29 +20,32 @@ const getOutputFromShellCommand = async (command: string) => {
  * in the source repository.
  *
  * @param {number} projectId The ID of the project to remove files from.
- * @param {string} path The base path for the files to check.
+ * @param {string[]} paths The base paths for the files to check.
  * @returns {boolean} True if files were successfully removed, false if no files were present on Crowdin.
  */
-export const removeDeletedFiles = async (projectId: number, path: string) => {
+export const removeDeletedFiles = async (
+  projectId: number,
+  paths: string[]
+) => {
   console.log("Cleaning deleted files...");
   const crowdinFiles = await CrowdinFilesHelper.getFiles(projectId);
   if (crowdinFiles && crowdinFiles.length) {
-    const shellCommand = `find ${path} -name \\*.*`;
-    const localFiles = await getOutputFromShellCommand(shellCommand);
-    const localFilesArray = localFiles?.split("\n");
-    if (localFilesArray?.length) {
-      const localFilesMap: { [key: string]: string } = localFilesArray.reduce(
-        (map, filename) => ({ ...map, [filename]: true }),
-        {}
-      );
-      for (const { fileId, path: crowdinFilePath } of crowdinFiles) {
-        if (!localFilesMap[crowdinFilePath]) {
-          await CrowdinFilesHelper.deleteFile(
-            projectId,
-            fileId,
-            crowdinFilePath
-          );
-        }
+    let totalFiles: string[] = [];
+    for (const path of paths) {
+      const shellCommand = `find ${path} -name \\*.*`;
+      const localFiles = await getOutputFromShellCommand(shellCommand);
+      const localFilesArray = localFiles?.split("\n");
+      if (localFilesArray?.length) {
+        totalFiles = totalFiles.concat(localFilesArray);
+      }
+    }
+    const localFilesMap: { [key: string]: string } = totalFiles.reduce(
+      (map, filename) => ({ ...map, [filename]: true }),
+      {}
+    );
+    for (const { fileId, path: crowdinFilePath } of crowdinFiles) {
+      if (!localFilesMap[crowdinFilePath]) {
+        await CrowdinFilesHelper.deleteFile(projectId, fileId, crowdinFilePath);
       }
     }
   } else {
