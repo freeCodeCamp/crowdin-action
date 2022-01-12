@@ -16931,7 +16931,12 @@ const convertChinese = (directories) => __awaiter(void 0, void 0, void 0, functi
             console.info(`Converting ${file}...`);
             const fileText = yield (0, promises_1.readFile)(file, "utf-8");
             const translatedText = yield node_opencc_1.default.simplifiedToTraditional(fileText);
-            yield (0, fs_extra_1.outputFile)(file.replace("chinese", "chinese-traditional"), translatedText);
+            if (process.env.USE_LANG_CODE) {
+                yield (0, fs_extra_1.outputFile)(file.replace("zh", "zh-TW"), translatedText);
+            }
+            else {
+                yield (0, fs_extra_1.outputFile)(file.replace("chinese", "chinese-traditional"), translatedText);
+            }
         }
     }
 });
