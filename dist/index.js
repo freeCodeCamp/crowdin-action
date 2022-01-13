@@ -16712,6 +16712,7 @@ const commit_changes_1 = __nccwpck_require__(9561);
 const convert_chinese_1 = __nccwpck_require__(4777);
 const generate_config_1 = __nccwpck_require__(5996);
 const hide_curriculum_strings_1 = __nccwpck_require__(2620);
+const hide_renpy_strings_1 = __nccwpck_require__(5911);
 const hide_specific_string_1 = __nccwpck_require__(7141);
 const pull_request_1 = __nccwpck_require__(3653);
 const remove_deleted_files_1 = __nccwpck_require__(3592);
@@ -16763,6 +16764,9 @@ const validate_environment_1 = __nccwpck_require__(3724);
             break;
         case "hide-curriculum-strings":
             yield (0, hide_curriculum_strings_1.hideCurriculumStrings)(projectId);
+            break;
+        case "hide-renpy-strings":
+            yield (0, hide_renpy_strings_1.hideRenpyStrings)(projectId);
             break;
         case "hide-string":
             if (!process.env.FILE_NAME || !process.env.STRING_CONTENT) {
@@ -17039,6 +17043,97 @@ const hideCurriculumStrings = (projectId) => __awaiter(void 0, void 0, void 0, f
     console.log("complete");
 });
 exports.hideCurriculumStrings = hideCurriculumStrings;
+
+
+/***/ }),
+
+/***/ 5911:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.hideRenpyStrings = void 0;
+const files_1 = __nccwpck_require__(6455);
+const strings_1 = __nccwpck_require__(8927);
+const labelNames = [
+    "new",
+    `""`,
+    "player",
+    "kid",
+    "mom",
+    "dad",
+    "mint",
+    "annika",
+    "girl",
+    "boy",
+    "college_boy",
+    "college_girl",
+    "female",
+    "marco",
+    "layla",
+    "cafe_manager",
+    "host",
+    "journalist",
+    "office_worker",
+    "male",
+    "trivia_guy",
+    "interviewer",
+    "npc",
+];
+/**
+ * Module to hide strings for Renpy translations (such as in LearnToCodeRPG).
+ * Hides any string that doesn't start with `new`.
+ *
+ * @param {number} projectId The Crowdin project ID for strings to hide.
+ */
+const hideRenpyStrings = (projectId) => __awaiter(void 0, void 0, void 0, function* () {
+    const projectFiles = yield files_1.CrowdinFilesHelper.getFiles(projectId);
+    if (!projectFiles || !projectFiles.length) {
+        return;
+    }
+    for (const file of projectFiles) {
+        const fileStrings = yield strings_1.CrowdinStringHelper.getStrings(projectId, file.fileId);
+        if (!fileStrings || !fileStrings.length) {
+            continue;
+        }
+        let prevStringHidden = false;
+        for (const string of fileStrings) {
+            if (string.data.text.startsWith("translate") ||
+                string.data.text.startsWith("old") ||
+                string.data.text.startsWith("#") ||
+                (prevStringHidden &&
+                    labelNames.every((label) => !string.data.text.startsWith(label)))) {
+                prevStringHidden = true;
+                if (string.data.isHidden) {
+                    console.log(`string already hidden: ${string.data.text}`);
+                    continue;
+                }
+                console.log(`hiding string: ${string.data.text}`);
+                yield strings_1.CrowdinStringHelper.changeHiddenStatus(projectId, string.data.id, true);
+            }
+            else {
+                prevStringHidden = false;
+                if (!string.data.isHidden) {
+                    console.log(`string already visible: ${string.data.text}`);
+                    continue;
+                }
+                console.log(`keeping string: ${string.data.text}`);
+                yield strings_1.CrowdinStringHelper.changeHiddenStatus(projectId, string.data.id, false);
+            }
+        }
+    }
+});
+exports.hideRenpyStrings = hideRenpyStrings;
 
 
 /***/ }),
