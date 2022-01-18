@@ -54,7 +54,7 @@ export const hideRenpyStrings = async (projectId: number) => {
         trimText.startsWith("old") ||
         trimText.startsWith("#") ||
         (prevStringHidden &&
-          labelNames.every((label) => !string.data.text.startsWith(label)) &&
+          labelNames.every((label) => !trimText.startsWith(label)) &&
           !quoteRegex.test(trimText))
       ) {
         prevStringHidden = true;
