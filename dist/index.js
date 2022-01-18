@@ -17113,7 +17113,7 @@ const hideRenpyStrings = (projectId) => __awaiter(void 0, void 0, void 0, functi
                 trimText.startsWith("old") ||
                 trimText.startsWith("#") ||
                 (prevStringHidden &&
-                    labelNames.every((label) => !string.data.text.startsWith(label)) &&
+                    labelNames.every((label) => !trimText.startsWith(label)) &&
                     !quoteRegex.test(trimText))) {
                 prevStringHidden = true;
                 if (string.data.isHidden) {
