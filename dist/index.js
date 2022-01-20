@@ -17067,7 +17067,6 @@ const files_1 = __nccwpck_require__(6455);
 const strings_1 = __nccwpck_require__(8927);
 const labelNames = [
     "new",
-    `""`,
     "player",
     "kid",
     "mom",
@@ -17108,11 +17107,14 @@ const hideRenpyStrings = (projectId) => __awaiter(void 0, void 0, void 0, functi
         }
         let prevStringHidden = false;
         for (const string of fileStrings) {
-            if (string.data.text.startsWith("translate") ||
-                string.data.text.startsWith("old") ||
-                string.data.text.startsWith("#") ||
+            const trimText = string.data.text.trim();
+            const quoteRegex = /^['"]/;
+            if (trimText.startsWith("translate") ||
+                trimText.startsWith("old") ||
+                trimText.startsWith("#") ||
                 (prevStringHidden &&
-                    labelNames.every((label) => !string.data.text.startsWith(label)))) {
+                    labelNames.every((label) => !trimText.startsWith(label)) &&
+                    !quoteRegex.test(trimText))) {
                 prevStringHidden = true;
                 if (string.data.isHidden) {
                     console.log(`string already hidden: ${string.data.text}`);

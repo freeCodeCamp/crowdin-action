@@ -3,7 +3,6 @@ import { CrowdinStringHelper } from "../utils/strings";
 
 const labelNames = [
   "new",
-  `""`,
   "player",
   "kid",
   "mom",
@@ -48,12 +47,15 @@ export const hideRenpyStrings = async (projectId: number) => {
     }
     let prevStringHidden = false;
     for (const string of fileStrings) {
+      const trimText = string.data.text.trim();
+      const quoteRegex = /^['"]/;
       if (
-        string.data.text.startsWith("translate") ||
-        string.data.text.startsWith("old") ||
-        string.data.text.startsWith("#") ||
+        trimText.startsWith("translate") ||
+        trimText.startsWith("old") ||
+        trimText.startsWith("#") ||
         (prevStringHidden &&
-          labelNames.every((label) => !string.data.text.startsWith(label)))
+          labelNames.every((label) => !trimText.startsWith(label)) &&
+          !quoteRegex.test(trimText))
       ) {
         prevStringHidden = true;
         if (string.data.isHidden) {
