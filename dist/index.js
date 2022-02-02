@@ -17018,6 +17018,7 @@ const createChallengeTitleLookup = (lookup, { fileId, path }, projectId) => {
      */
     String(projectId) === "31" ? (0, path_1.join)(...path.split(/\\\//g).slice(1)) : path;
     const challengeFilePath = (0, path_1.join)(process.cwd(), crowdinFilePath);
+    console.table({ path, projectId, crowdinFilePath, challengeFilePath });
     try {
         const challengeContent = (0, fs_1.readFileSync)(challengeFilePath, "utf-8");
         const { data: { title: challengeTitle }, } = (0, gray_matter_1.default)(challengeContent);
