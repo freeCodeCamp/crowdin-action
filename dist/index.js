@@ -17007,7 +17007,16 @@ const path_1 = __nccwpck_require__(1017);
 const gray_matter_1 = __importDefault(__nccwpck_require__(5382));
 const files_1 = __nccwpck_require__(6455);
 const strings_1 = __nccwpck_require__(8927);
-const createChallengeTitleLookup = (lookup, { fileId, path: crowdinFilePath }) => {
+const createChallengeTitleLookup = (lookup, { fileId, path }, projectId) => {
+    const crowdinFilePath = 
+    /**
+     * This is some hacky logic. Because we are using a single crowdin project
+     * for multiple repositories, the configs are set to nest the files within subdirectories
+     * on Crowdin. However, these subdirectories do not exist in the local repository files, so
+     * we need to detect if this plugin is running on that specific project. If so, remove the subdirectory
+     * from the path.
+     */
+    String(projectId) === "31" ? (0, path_1.join)(...path.split(/\\\//g)) : path;
     const challengeFilePath = (0, path_1.join)(process.cwd(), crowdinFilePath);
     try {
         const challengeContent = (0, fs_1.readFileSync)(challengeFilePath, "utf-8");
@@ -17031,7 +17040,7 @@ const hideCurriculumStrings = (projectId) => __awaiter(void 0, void 0, void 0, f
     console.log("Hiding non-translated strings...");
     const crowdinFiles = yield files_1.CrowdinFilesHelper.getFiles(projectId);
     if (crowdinFiles && crowdinFiles.length) {
-        const challengeTitleLookup = crowdinFiles.reduce((lookup, file) => createChallengeTitleLookup(lookup, file), {});
+        const challengeTitleLookup = crowdinFiles.reduce((lookup, file) => createChallengeTitleLookup(lookup, file, projectId), {});
         const crowdinStrings = yield strings_1.CrowdinStringHelper.getStrings(projectId);
         if (crowdinStrings && crowdinStrings.length) {
             for (const string of crowdinStrings) {
