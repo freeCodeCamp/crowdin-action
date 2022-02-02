@@ -23,7 +23,7 @@ const createChallengeTitleLookup = (
      * we need to detect if this plugin is running on that specific project. If so, remove the subdirectory
      * from the path.
      */
-    String(projectId) === "31" ? join(...path.split(/\\\//g).slice(1)) : path;
+    String(projectId) === "31" ? join(...path.split("/").slice(1)) : path;
   const challengeFilePath = join(process.cwd(), crowdinFilePath);
   try {
     const challengeContent = readFileSync(challengeFilePath, "utf-8");
@@ -38,7 +38,7 @@ const createChallengeTitleLookup = (
       },
     };
   } catch (err) {
-    console.log(JSON.stringify(err), null, 2);
+    console.log(JSON.stringify(err, null, 2));
     return lookup;
   }
 };
