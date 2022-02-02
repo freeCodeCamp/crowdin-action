@@ -5,6 +5,7 @@ on:
       - "main"
     paths:
       - "src/**"
+      - "!src/configs/**"
 
 jobs:
   issue-warning:
