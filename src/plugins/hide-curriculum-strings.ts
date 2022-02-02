@@ -25,6 +25,7 @@ const createChallengeTitleLookup = (
      */
     String(projectId) === "31" ? join(...path.split(/\\\//g).slice(1)) : path;
   const challengeFilePath = join(process.cwd(), crowdinFilePath);
+  console.table({ path, projectId, crowdinFilePath, challengeFilePath });
   try {
     const challengeContent = readFileSync(challengeFilePath, "utf-8");
     const {
