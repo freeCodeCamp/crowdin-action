@@ -17018,7 +17018,6 @@ const createChallengeTitleLookup = (lookup, { fileId, path }, projectId) => {
      */
     String(projectId) === "31" ? (0, path_1.join)(...path.split("/").slice(1)) : path;
     const challengeFilePath = (0, path_1.join)(process.cwd(), crowdinFilePath);
-    console.table({ path, projectId, crowdinFilePath, challengeFilePath });
     try {
         const challengeContent = (0, fs_1.readFileSync)(challengeFilePath, "utf-8");
         const { data: { title: challengeTitle }, } = (0, gray_matter_1.default)(challengeContent);
@@ -17028,7 +17027,7 @@ const createChallengeTitleLookup = (lookup, { fileId, path }, projectId) => {
             } });
     }
     catch (err) {
-        console.log(JSON.stringify(err), null, 2);
+        console.log(JSON.stringify(err, null, 2));
         return lookup;
     }
 };
@@ -17717,6 +17716,7 @@ const isReservedHeading = (context, str) => {
         "solutions",
         "text",
         "video-solution",
+        "tests",
     ];
     const captureGroupString = `(${reservedHeadings.join("|")})`;
     const regex = new RegExp(`--${captureGroupString}--`);
