@@ -12,8 +12,18 @@ import { CrowdinStringHelper } from "../utils/strings";
 
 const createChallengeTitleLookup = (
   lookup: ChallengeTitleLookup,
-  { fileId, path: crowdinFilePath }: CrowdinFileData
+  { fileId, path }: CrowdinFileData,
+  projectId: number
 ) => {
+  const crowdinFilePath =
+    /**
+     * This is some hacky logic. Because we are using a single crowdin project
+     * for multiple repositories, the configs are set to nest the files within subdirectories
+     * on Crowdin. However, these subdirectories do not exist in the local repository files, so
+     * we need to detect if this plugin is running on that specific project. If so, remove the subdirectory
+     * from the path.
+     */
+    String(projectId) === "31" ? join(...path.split(/\\\//g)) : path;
   const challengeFilePath = join(process.cwd(), crowdinFilePath);
   try {
     const challengeContent = readFileSync(challengeFilePath, "utf-8");
@@ -43,7 +53,7 @@ export const hideCurriculumStrings = async (projectId: number) => {
   const crowdinFiles = await CrowdinFilesHelper.getFiles(projectId);
   if (crowdinFiles && crowdinFiles.length) {
     const challengeTitleLookup: ChallengeTitleLookup = crowdinFiles.reduce(
-      (lookup, file) => createChallengeTitleLookup(lookup, file),
+      (lookup, file) => createChallengeTitleLookup(lookup, file, projectId),
       {}
     );
     const crowdinStrings = await CrowdinStringHelper.getStrings(projectId);
