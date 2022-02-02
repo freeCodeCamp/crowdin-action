@@ -17016,7 +17016,7 @@ const createChallengeTitleLookup = (lookup, { fileId, path }, projectId) => {
      * we need to detect if this plugin is running on that specific project. If so, remove the subdirectory
      * from the path.
      */
-    String(projectId) === "31" ? (0, path_1.join)(...path.split(/\\\//g)) : path;
+    String(projectId) === "31" ? (0, path_1.join)(...path.split(/\\\//g).slice(1)) : path;
     const challengeFilePath = (0, path_1.join)(process.cwd(), crowdinFilePath);
     try {
         const challengeContent = (0, fs_1.readFileSync)(challengeFilePath, "utf-8");
