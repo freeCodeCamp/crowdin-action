@@ -8,8 +8,13 @@
 files:
   [
     {
-      "source": "/tooling/locales/en/*",
-      "dest": "/rust-in-replit/tooling/locales/en/*",
+      "source": "/tooling/locales/en/*.md",
+      "dest": "/rust-in-replit/tooling/locales/en/%original_file_name%",
+      "translation": "/tooling/locales/%two_letters_code%/%original_file_name%",
+    },
+    {
+      "source": "/tooling/locales/en/*.json",
+      "dest": "/rust-in-replit/tooling/locales/en/%original_file_name%",
       "translation": "/tooling/locales/%two_letters_code%/%original_file_name%",
     },
   ]
