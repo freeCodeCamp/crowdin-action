@@ -25,7 +25,6 @@ const createChallengeTitleLookup = (
      */
     String(projectId) === "31" ? join(...path.split("/").slice(1)) : path;
   const challengeFilePath = join(process.cwd(), crowdinFilePath);
-  console.table({ path, projectId, crowdinFilePath, challengeFilePath });
   try {
     const challengeContent = readFileSync(challengeFilePath, "utf-8");
     const {
@@ -39,7 +38,7 @@ const createChallengeTitleLookup = (
       },
     };
   } catch (err) {
-    console.log(JSON.stringify(err), null, 2);
+    console.log(JSON.stringify(err, null, 2));
     return lookup;
   }
 };
