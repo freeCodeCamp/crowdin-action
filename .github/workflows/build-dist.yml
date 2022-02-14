@@ -1,31 +1,35 @@
-name: Require Distribution Build
+name: Generate Distribution Build
 on:
-  pull_request_target:
+  push:
     branches:
-      - "main"
-    paths:
-      - "src/**"
-      - "!src/configs/**"
+      - main
 
 jobs:
-  issue-warning:
+  build-dist:
     runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
-      - uses: actions/github-script@v5
+      - name: Checkout Source Files
+        uses: actions/checkout@v2
+
+      - name: Use Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const files = await github.rest.pulls.listFiles({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-            });
-            if (!files.data.find(file => file.filename === "dist/index.js")) {
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: "Hello there!\n\nThank you for your interest in contributing. However, it looks like you have made changes to the action's code without including an updated distribution build. Please run `npm run package` on your local version of this branch, commit the new `dist/index.js` file, and push it to this PR."
-              });
-            core.setFailed("Missing Distribution Build.");
-            };
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Distribution Package
+        run: npm run package
+
+      - name: Commit Build
+        run: |
+          git add dist
+          git commit -m "chore: build action"
+          git push
+
