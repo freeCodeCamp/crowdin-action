@@ -39,18 +39,13 @@ import { validateEnvironment } from "./utils/validate-environment";
       await checkPaths();
       break;
     case "commit-changes":
-      if (
-        !process.env.GH_USERNAME ||
-        !process.env.GH_EMAIL ||
-        !process.env.GH_BRANCH ||
-        !process.env.GH_MESSAGE
-      ) {
+      if (!process.env.GH_BRANCH || !process.env.GH_MESSAGE) {
         setFailed("Missing commit configuration data.");
         break;
       }
       await commitChanges(
-        process.env.GH_USERNAME,
-        process.env.GH_EMAIL,
+        process.env.GH_USERNAME || "camperbot",
+        process.env.GH_EMAIL || "camperbot@users.noreply.github.com",
         process.env.GH_BRANCH,
         process.env.GH_MESSAGE
       );
