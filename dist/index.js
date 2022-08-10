@@ -16739,14 +16739,11 @@ const validate_environment_1 = __nccwpck_require__(3724);
             yield (0, check_paths_1.checkPaths)();
             break;
         case "commit-changes":
-            if (!process.env.GH_USERNAME ||
-                !process.env.GH_EMAIL ||
-                !process.env.GH_BRANCH ||
-                !process.env.GH_MESSAGE) {
+            if (!process.env.GH_BRANCH || !process.env.GH_MESSAGE) {
                 (0, core_1.setFailed)("Missing commit configuration data.");
                 break;
             }
-            yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME, process.env.GH_EMAIL, process.env.GH_BRANCH, process.env.GH_MESSAGE);
+            yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME || "camperbot", process.env.GH_EMAIL || "camperbot@users.noreply.github.com", process.env.GH_BRANCH, process.env.GH_MESSAGE);
             break;
         case "convert-chinese":
             if (!process.env.FILE_PATHS) {
