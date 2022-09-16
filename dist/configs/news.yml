@@ -1,0 +1,20 @@
+"project_id_env": "CROWDIN_PROJECT_ID"
+"api_token_env": "CROWDIN_PERSONAL_TOKEN"
+"base_path_env": "CROWDIN_BASE_PATH"
+"base_url_env": "CROWDIN_BASE_URL"
+
+"preserve_hierarchy": true
+
+files:
+  [
+    {
+      "source": "config/i18n/locales/english/*.json",
+      "translation": "/config/i18n/locales/%language%/%original_file_name%",
+      "ignore":
+        [
+          "config/i18n/locales/english/links.json",
+          "config/i18n/locales/english/meta-tags.json",
+          "config/i18n/locales/english/serve.json"
+        ],
+    },
+  ]
