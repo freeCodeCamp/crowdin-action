@@ -17213,6 +17213,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createPullRequest = void 0;
+const child_process_1 = __nccwpck_require__(2081);
+const util_1 = __nccwpck_require__(3837);
 const github_1 = __nccwpck_require__(5438);
 /**
  * Module to create a pull request.
@@ -17230,6 +17232,7 @@ const github_1 = __nccwpck_require__(5438);
  */
 const createPullRequest = (token, branch, repository, base = "main", title, body, labels, reviewers, teamReviewers) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const asyncExec = (0, util_1.promisify)(child_process_1.exec);
         const parsedLabels = labels ? labels.split(/,\s+/) : [];
         const parsedReviewers = reviewers ? reviewers.split(/,\s+/) : [];
         const parsedTeamReviewers = teamReviewers
@@ -17254,6 +17257,12 @@ const createPullRequest = (token, branch, repository, base = "main", title, body
         if (pullRequestExists.data.length) {
             console.info(`It looks like pull request ${pullRequestExists.data[0].number} already exists.`);
             // we want to exit successfully as this isn't a failure condition.
+            return true;
+        }
+        const { stdout: currentBranch } = yield asyncExec("git log --pretty=oneline -1");
+        const { stdout: mainBranch } = yield asyncExec("git log --pretty=oneline -1 main");
+        if (currentBranch === mainBranch) {
+            console.info("Nothing was committed, no PR will be created.");
             return true;
         }
         const pullRequest = yield githubClient.rest.pulls
