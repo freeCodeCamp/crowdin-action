@@ -1,3 +1,6 @@
+import { exec } from "child_process";
+import { promisify } from "util";
+
 import { getOctokit } from "@actions/github";
 
 /**
@@ -26,6 +29,7 @@ export const createPullRequest = async (
   teamReviewers?: string
 ) => {
   try {
+    const asyncExec = promisify(exec);
     const parsedLabels = labels ? labels.split(/,\s+/) : [];
     const parsedReviewers = reviewers ? reviewers.split(/,\s+/) : [];
     const parsedTeamReviewers = teamReviewers
@@ -58,6 +62,18 @@ export const createPullRequest = async (
         `It looks like pull request ${pullRequestExists.data[0].number} already exists.`
       );
       // we want to exit successfully as this isn't a failure condition.
+      return true;
+    }
+
+    const { stdout: currentBranch } = await asyncExec(
+      "git log --pretty=oneline -1"
+    );
+    const { stdout: mainBranch } = await asyncExec(
+      "git log --pretty=oneline -1 main"
+    );
+
+    if (currentBranch === mainBranch) {
+      console.info("Nothing was committed, no PR will be created.");
       return true;
     }
 
