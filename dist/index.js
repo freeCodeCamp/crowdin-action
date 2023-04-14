@@ -17261,7 +17261,7 @@ const createPullRequest = (token, branch, repository, base = "main", title, body
         }
         const { stdout: currentBranch } = yield asyncExec("git log --pretty=oneline -1");
         const { stdout: mainBranch } = yield asyncExec("git log --pretty=oneline -1 main");
-        if (currentBranch === mainBranch) {
+        if (currentBranch.split(" ")[0] === mainBranch.split(" ")[0]) {
             console.info("Nothing was committed, no PR will be created.");
             return true;
         }
