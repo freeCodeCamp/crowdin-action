@@ -65,14 +65,10 @@ export const createPullRequest = async (
       return true;
     }
 
-    const { stdout: currentBranch } = await asyncExec(
-      "git rev-parse HEAD"
-    );
-    const { stdout: mainBranch } = await asyncExec(
-      "git rev-parse main"
-    );
+    const { stdout: currentBranch } = await asyncExec("git rev-parse HEAD");
+    const { stdout: baseBranch } = await asyncExec(`git rev-parse ${base}`);
 
-    if (currentBranch === mainBranch) {
+    if (currentBranch === baseBranch) {
       console.info("Nothing was committed, no PR will be created.");
       return true;
     }

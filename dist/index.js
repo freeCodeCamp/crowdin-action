@@ -17259,9 +17259,9 @@ const createPullRequest = (token, branch, repository, base = "main", title, body
             // we want to exit successfully as this isn't a failure condition.
             return true;
         }
-        const { stdout: currentBranch } = yield asyncExec("git log --pretty=oneline -1");
-        const { stdout: mainBranch } = yield asyncExec("git log --pretty=oneline -1 main");
-        if (currentBranch.split(" ")[0] === mainBranch.split(" ")[0]) {
+        const { stdout: currentBranch } = yield asyncExec("git rev-parse HEAD");
+        const { stdout: baseBranch } = yield asyncExec(`git rev-parse ${base}`);
+        if (currentBranch === baseBranch) {
             console.info("Nothing was committed, no PR will be created.");
             return true;
         }
