@@ -66,13 +66,13 @@ export const createPullRequest = async (
     }
 
     const { stdout: currentBranch } = await asyncExec(
-      "git log --pretty=oneline -1"
+      "git rev-parse HEAD"
     );
     const { stdout: mainBranch } = await asyncExec(
-      "git log --pretty=oneline -1 main"
+      "git rev-parse main"
     );
 
-    if (currentBranch.split(" ")[0] === mainBranch.split(" ")[0]) {
+    if (currentBranch === mainBranch) {
       console.info("Nothing was committed, no PR will be created.");
       return true;
     }
