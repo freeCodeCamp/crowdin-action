@@ -14,7 +14,7 @@ files:
         [
           "config/i18n/locales/english/links.json",
           "config/i18n/locales/english/meta-tags.json",
-          "config/i18n/locales/english/serve.json"
+          "config/i18n/locales/english/redirects.json"
         ],
     },
   ]
