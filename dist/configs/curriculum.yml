@@ -17,6 +17,7 @@ files:
           "/**/15-javascript-algorithms-and-data-structures-22/**/*.md",
           "/15-javascript-algorithms-and-data-structures-22/**/*.md",
         ],
+      "type": "md35",
     },
     {
       "source": "/curriculum/challenges/english/00-certifications/**/*.yml",
