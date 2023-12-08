@@ -17,5 +17,6 @@ files:
           "/docs/_translations.md",
           "/docs/README.md",
         ],
+      "type": "md35",
     },
   ]
