@@ -23,7 +23,7 @@ const getFiles = async (directory: string, fileList: string[] = []) => {
  *
  * @param {string[]} directories The directory to convert.
  */
-export const convertChinese = async (directories: string) => {
+export const convertChinese = async (directories: string[]) => {
   console.info("Getting file list...");
   for (const directory of directories) {
     const files = await getFiles(join(process.cwd(), directory));
