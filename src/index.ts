@@ -7,6 +7,7 @@ import { generateConfig } from "./plugins/generate-config";
 import { hideCurriculumStrings } from "./plugins/hide-curriculum-strings";
 import { hideRenpyStrings } from "./plugins/hide-renpy-strings";
 import { hideSpecificString } from "./plugins/hide-specific-string";
+import { lowercaseDirectories } from "./plugins/lowercase-directories";
 import { createPullRequest } from "./plugins/pull-request";
 import { removeDeletedFiles } from "./plugins/remove-deleted-files";
 import { unhideSpecificString } from "./plugins/unhide-specific-string";
@@ -80,6 +81,13 @@ import { validateEnvironment } from "./utils/validate-environment";
         process.env.FILE_NAME,
         process.env.STRING_CONTENT
       );
+      break;
+    case "lowercase-directories":
+      if (!process.env.FILE_PATHS) {
+        setFailed("Missing file paths.");
+        break;
+      }
+      lowercaseDirectories(JSON.parse(process.env.FILE_PATHS));
       break;
     case "pull-request":
       if (
