@@ -40071,6 +40071,7 @@ const generate_config_1 = __nccwpck_require__(8605);
 const hide_curriculum_strings_1 = __nccwpck_require__(8644);
 const hide_renpy_strings_1 = __nccwpck_require__(2624);
 const hide_specific_string_1 = __nccwpck_require__(6261);
+const lowercase_directories_1 = __nccwpck_require__(4960);
 const pull_request_1 = __nccwpck_require__(1107);
 const remove_deleted_files_1 = __nccwpck_require__(5823);
 const unhide_specific_string_1 = __nccwpck_require__(4378);
@@ -40128,6 +40129,13 @@ const validate_environment_1 = __nccwpck_require__(1246);
                 break;
             }
             yield (0, hide_specific_string_1.hideSpecificString)(projectId, process.env.FILE_NAME, process.env.STRING_CONTENT);
+            break;
+        case "lowercase-directories":
+            if (!process.env.FILE_PATHS) {
+                (0, core_1.setFailed)("Missing file paths.");
+                break;
+            }
+            (0, lowercase_directories_1.lowercaseDirectories)(JSON.parse(process.env.FILE_PATHS));
             break;
         case "pull-request":
             if (!process.env.GH_TOKEN ||
@@ -40550,6 +40558,50 @@ const hideSpecificString = (projectId, fileName, string) => __awaiter(void 0, vo
     return true;
 });
 exports.hideSpecificString = hideSpecificString;
+
+
+/***/ }),
+
+/***/ 4960:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.lowercaseDirectories = void 0;
+const fs_1 = __nccwpck_require__(7147);
+const path_1 = __nccwpck_require__(1017);
+/**
+ *
+ * @param {string[]} directories The directories that must be sorted through.
+ */
+const lowercaseDirectories = (directories) => __awaiter(void 0, void 0, void 0, function* () {
+    console.info("Getting file list...");
+    for (const directory of directories) {
+        if (directory.toLocaleLowerCase() !== directory) {
+            const oldPath = (0, path_1.join)(process.cwd(), directory);
+            const newPath = (0, path_1.join)(process.cwd(), directory.toLocaleLowerCase());
+            yield (0, fs_1.rename)(oldPath, newPath, (err) => {
+                if (err) {
+                    console.error("Error making directory lowercase:", err);
+                }
+                else {
+                    console.log(`${directory} has been made lowercase`);
+                }
+            });
+        }
+    }
+});
+exports.lowercaseDirectories = lowercaseDirectories;
 
 
 /***/ }),
