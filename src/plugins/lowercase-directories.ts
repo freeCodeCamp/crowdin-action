@@ -1,4 +1,4 @@
-import { rename } from "fs";
+import { rename } from "fs/promises";
 import { join } from "path";
 
 /**
