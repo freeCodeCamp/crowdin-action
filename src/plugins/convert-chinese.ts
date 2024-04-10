@@ -26,7 +26,10 @@ const getFiles = async (directory: string, fileList: string[] = []) => {
 export const convertChinese = async (directories: string[]) => {
   console.info("Getting file list...");
   for (const directory of directories) {
-    const files = await getFiles(join(process.cwd(), directory));
+    const status = await stat(directory);
+    const files = status.isDirectory()
+      ? await getFiles(join(process.cwd(), directory))
+      : [directory];
     for (const file of files) {
       console.info(`Converting ${file}...`);
       const fileText = await readFile(file, "utf-8");

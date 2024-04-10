@@ -40292,7 +40292,10 @@ const getFiles = (directory, fileList = []) => __awaiter(void 0, void 0, void 0,
 const convertChinese = (directories) => __awaiter(void 0, void 0, void 0, function* () {
     console.info("Getting file list...");
     for (const directory of directories) {
-        const files = yield getFiles((0, path_1.join)(process.cwd(), directory));
+        const status = yield (0, promises_1.stat)(directory);
+        const files = status.isDirectory()
+            ? yield getFiles((0, path_1.join)(process.cwd(), directory))
+            : [directory];
         for (const file of files) {
             console.info(`Converting ${file}...`);
             const fileText = yield (0, promises_1.readFile)(file, "utf-8");
