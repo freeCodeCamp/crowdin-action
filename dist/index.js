@@ -40287,15 +40287,16 @@ const getFiles = (directory, fileList = []) => __awaiter(void 0, void 0, void 0,
 /**
  * Module to convert Simplified Chinese files to Traditional Chinese.
  *
- * @param {string[]} directories The directory to convert.
+ * @param {string[]} paths The directories and file paths to convert.
  */
-const convertChinese = (directories) => __awaiter(void 0, void 0, void 0, function* () {
+const convertChinese = (paths) => __awaiter(void 0, void 0, void 0, function* () {
     console.info("Getting file list...");
-    for (const directory of directories) {
-        const status = yield (0, promises_1.stat)(directory);
+    for (const relativePath of paths) {
+        const absolutePath = (0, path_1.join)(process.cwd(), relativePath);
+        const status = yield (0, promises_1.stat)(absolutePath);
         const files = status.isDirectory()
-            ? yield getFiles((0, path_1.join)(process.cwd(), directory))
-            : [directory];
+            ? yield getFiles(absolutePath)
+            : [absolutePath];
         for (const file of files) {
             console.info(`Converting ${file}...`);
             const fileText = yield (0, promises_1.readFile)(file, "utf-8");
