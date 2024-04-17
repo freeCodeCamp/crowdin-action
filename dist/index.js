@@ -40287,12 +40287,16 @@ const getFiles = (directory, fileList = []) => __awaiter(void 0, void 0, void 0,
 /**
  * Module to convert Simplified Chinese files to Traditional Chinese.
  *
- * @param {string[]} directories The directory to convert.
+ * @param {string[]} paths The directories and file paths to convert.
  */
-const convertChinese = (directories) => __awaiter(void 0, void 0, void 0, function* () {
+const convertChinese = (paths) => __awaiter(void 0, void 0, void 0, function* () {
     console.info("Getting file list...");
-    for (const directory of directories) {
-        const files = yield getFiles((0, path_1.join)(process.cwd(), directory));
+    for (const relativePath of paths) {
+        const absolutePath = (0, path_1.join)(process.cwd(), relativePath);
+        const status = yield (0, promises_1.stat)(absolutePath);
+        const files = status.isDirectory()
+            ? yield getFiles(absolutePath)
+            : [absolutePath];
         for (const file of files) {
             console.info(`Converting ${file}...`);
             const fileText = yield (0, promises_1.readFile)(file, "utf-8");
@@ -40578,7 +40582,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lowercaseDirectories = void 0;
-const fs_1 = __nccwpck_require__(7147);
+const promises_1 = __nccwpck_require__(3292);
 const path_1 = __nccwpck_require__(1017);
 /**
  *
@@ -40590,14 +40594,8 @@ const lowercaseDirectories = (directories) => __awaiter(void 0, void 0, void 0, 
         if (directory.toLocaleLowerCase() !== directory) {
             const oldPath = (0, path_1.join)(process.cwd(), directory);
             const newPath = (0, path_1.join)(process.cwd(), directory.toLocaleLowerCase());
-            yield (0, fs_1.rename)(oldPath, newPath, (err) => {
-                if (err) {
-                    console.error("Error making directory lowercase:", err);
-                }
-                else {
-                    console.log(`${directory} has been made lowercase`);
-                }
-            });
+            console.log(`Renaming ${directory}`);
+            yield (0, promises_1.rename)(oldPath, newPath);
         }
     }
 });
@@ -41133,6 +41131,12 @@ const isReservedHeading = (context, str) => {
         "video-solution",
         "tests",
         "notes",
+        "fillInTheBlank",
+        "sentence",
+        "blanks",
+        "feedback",
+        "scene",
+        "assignments",
     ];
     const captureGroupString = `(${reservedHeadings.join("|")})`;
     const regex = new RegExp(`--${captureGroupString}--`);
