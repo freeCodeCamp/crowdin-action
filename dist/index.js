@@ -41136,6 +41136,7 @@ const isReservedHeading = (context, str) => {
         "blanks",
         "feedback",
         "scene",
+        "assignments",
     ];
     const captureGroupString = `(${reservedHeadings.join("|")})`;
     const regex = new RegExp(`--${captureGroupString}--`);
