@@ -44,3 +44,6 @@ jobs:
 
       - name: Run Tests
         run: pnpm run test
+        
+      - name: Check dist is up-to-date
+        run: git diff --exit-code HEAD
