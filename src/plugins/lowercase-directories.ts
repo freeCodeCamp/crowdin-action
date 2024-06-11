@@ -10,8 +10,10 @@ async function lowerCaseSubDirectories(dir: string): Promise<void> {
       const filePath = join(dir, file.name);
       const newFilePath = join(dir, file.name.toLowerCase());
 
-      console.log(`Renaming directory ${filePath} to ${newFilePath}`);
-      await rename(filePath, newFilePath);
+      if (filePath !== newFilePath) {
+        console.log(`Renaming directory ${filePath} to ${newFilePath}`);
+        await rename(filePath, newFilePath);
+      }
       await lowerCaseSubDirectories(newFilePath);
     }
   }
