@@ -40131,11 +40131,11 @@ const validate_environment_1 = __nccwpck_require__(1246);
             yield (0, hide_specific_string_1.hideSpecificString)(projectId, process.env.FILE_NAME, process.env.STRING_CONTENT);
             break;
         case "lowercase-directories":
-            if (!process.env.FILE_PATHS) {
+            if (!process.env.FILE_PATH) {
                 (0, core_1.setFailed)("Missing file paths.");
                 break;
             }
-            (0, lowercase_directories_1.lowercaseDirectories)(JSON.parse(process.env.FILE_PATHS));
+            (0, lowercase_directories_1.lowercaseDirectories)(JSON.parse(process.env.FILE_PATH));
             break;
         case "pull-request":
             if (!process.env.GH_TOKEN ||
@@ -40584,21 +40584,50 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lowercaseDirectories = void 0;
 const promises_1 = __nccwpck_require__(3292);
 const path_1 = __nccwpck_require__(1017);
-/**
- *
- * @param {string[]} directories The directories that must be sorted through.
- */
-const lowercaseDirectories = (directories) => __awaiter(void 0, void 0, void 0, function* () {
-    console.info("Getting file list...");
-    for (const directory of directories) {
-        if (directory.toLocaleLowerCase() !== directory) {
-            const oldPath = (0, path_1.join)(process.cwd(), directory);
-            const newPath = (0, path_1.join)(process.cwd(), directory.toLocaleLowerCase());
-            console.log(`Renaming ${directory}`);
-            yield (0, promises_1.rename)(oldPath, newPath);
+function readAllFiles(dir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const files = yield (0, promises_1.readdir)(dir, { withFileTypes: true });
+        let allFiles = [];
+        for (const file of files) {
+            const filePath = (0, path_1.join)(dir, file.name);
+            if (file.isDirectory()) {
+                const subFiles = yield readAllFiles(filePath);
+                allFiles = allFiles.concat(subFiles);
+            }
+            else {
+                allFiles.push(filePath);
+            }
+        }
+        return allFiles;
+    });
+}
+// Recursive function to process directories and subdirectories
+const processDirectory = (dirPath) => __awaiter(void 0, void 0, void 0, function* () {
+    // Get all files recursively
+    const allFiles = yield readAllFiles(dirPath);
+    // Lowercase directory names
+    for (const filePath of allFiles) {
+        const dirPath = filePath.split("/").slice(0, -1).join("/");
+        const dirName = filePath.split("/").pop();
+        const lowercasedDirName = dirName === null || dirName === void 0 ? void 0 : dirName.toLowerCase();
+        if (lowercasedDirName === undefined) {
+            throw new Error("Lowercased DirName Required");
+        }
+        if (lowercasedDirName !== dirName) {
+            const newPath = (0, path_1.join)(dirPath, lowercasedDirName);
+            console.log(`Renaming directory ${filePath} to ${newPath}`);
+            yield (0, promises_1.rename)(filePath, newPath);
         }
     }
 });
+/**
+ *
+ * @param {string} directory The directory tree that must be sorted through.
+ */
+const lowercaseDirectories = (directory) => {
+    console.info("Getting directory list...");
+    processDirectory(directory);
+};
 exports.lowercaseDirectories = lowercaseDirectories;
 
 
