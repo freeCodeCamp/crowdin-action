@@ -84,10 +84,10 @@ import { validateEnvironment } from "./utils/validate-environment";
       break;
     case "lowercase-directories":
       if (!process.env.FILE_PATH) {
-        setFailed("Missing file paths.");
+        setFailed("FILE_PATH is required by lowercase-directories.");
         break;
       }
-      lowercaseDirectories(JSON.parse(process.env.FILE_PATH));
+      lowercaseDirectories(process.env.FILE_PATH);
       break;
     case "pull-request":
       if (
