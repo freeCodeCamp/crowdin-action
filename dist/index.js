@@ -40132,10 +40132,10 @@ const validate_environment_1 = __nccwpck_require__(1246);
             break;
         case "lowercase-directories":
             if (!process.env.FILE_PATH) {
-                (0, core_1.setFailed)("Missing file paths.");
+                (0, core_1.setFailed)("FILE_PATH is required by lowercase-directories.");
                 break;
             }
-            (0, lowercase_directories_1.lowercaseDirectories)(JSON.parse(process.env.FILE_PATH));
+            (0, lowercase_directories_1.lowercaseDirectories)(process.env.FILE_PATH);
             break;
         case "pull-request":
             if (!process.env.GH_TOKEN ||
