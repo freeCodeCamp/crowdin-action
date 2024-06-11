@@ -40592,8 +40592,10 @@ function lowerCaseSubDirectories(dir) {
             if (file.isDirectory()) {
                 const filePath = (0, path_1.join)(dir, file.name);
                 const newFilePath = (0, path_1.join)(dir, file.name.toLowerCase());
-                console.log(`Renaming directory ${filePath} to ${newFilePath}`);
-                yield (0, promises_1.rename)(filePath, newFilePath);
+                if (filePath !== newFilePath) {
+                    console.log(`Renaming directory ${filePath} to ${newFilePath}`);
+                    yield (0, promises_1.rename)(filePath, newFilePath);
+                }
                 yield lowerCaseSubDirectories(newFilePath);
             }
         }
