@@ -40584,49 +40584,30 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lowercaseDirectories = void 0;
 const promises_1 = __nccwpck_require__(3292);
 const path_1 = __nccwpck_require__(1017);
-function readAllFiles(dir) {
+// Recursive function to process directories and subdirectories
+function lowerCaseSubDirectories(dir) {
     return __awaiter(this, void 0, void 0, function* () {
         const files = yield (0, promises_1.readdir)(dir, { withFileTypes: true });
-        let allFiles = [];
         for (const file of files) {
-            const filePath = (0, path_1.join)(dir, file.name);
             if (file.isDirectory()) {
-                const subFiles = yield readAllFiles(filePath);
-                allFiles = allFiles.concat(subFiles);
-            }
-            else {
-                allFiles.push(filePath);
+                const filePath = (0, path_1.join)(dir, file.name);
+                const newFilePath = (0, path_1.join)(dir, file.name.toLowerCase());
+                if (filePath !== newFilePath) {
+                    console.log(`Renaming directory ${filePath} to ${newFilePath}`);
+                    yield (0, promises_1.rename)(filePath, newFilePath);
+                }
+                yield lowerCaseSubDirectories(newFilePath);
             }
         }
-        return allFiles;
     });
 }
-// Recursive function to process directories and subdirectories
-const processDirectory = (dirPath) => __awaiter(void 0, void 0, void 0, function* () {
-    // Get all files recursively
-    const allFiles = yield readAllFiles(dirPath);
-    // Lowercase directory names
-    for (const filePath of allFiles) {
-        const dirPath = filePath.split("/").slice(0, -1).join("/");
-        const dirName = filePath.split("/").pop();
-        const lowercasedDirName = dirName === null || dirName === void 0 ? void 0 : dirName.toLowerCase();
-        if (lowercasedDirName === undefined) {
-            throw new Error("Lowercased DirName Required");
-        }
-        if (lowercasedDirName !== dirName) {
-            const newPath = (0, path_1.join)(dirPath, lowercasedDirName);
-            console.log(`Renaming directory ${filePath} to ${newPath}`);
-            yield (0, promises_1.rename)(filePath, newPath);
-        }
-    }
-});
 /**
  *
  * @param {string} directory The directory tree that must be sorted through.
  */
 const lowercaseDirectories = (directory) => {
     console.info("Getting directory list...");
-    processDirectory(directory);
+    lowerCaseSubDirectories(directory);
 };
 exports.lowercaseDirectories = lowercaseDirectories;
 
