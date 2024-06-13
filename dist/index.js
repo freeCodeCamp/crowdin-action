@@ -40240,7 +40240,7 @@ const commitChanges = (username, email, branchName, commitMessage, cwd) => __awa
     yield asyncExec(`git config --global user.email ${email}`, options);
     yield asyncExec(`git checkout -b ${branchName}`, options);
     yield asyncExec("git add .", options);
-    yield asyncExec("git reset crowdin-config.yml");
+    yield asyncExec("git reset crowdin-config.yml", options);
     yield asyncExec(`git diff-index --quiet HEAD || git commit -m "${commitMessage}"`, options);
     yield asyncExec(`git push -u origin ${branchName} -f`, options);
 });
