@@ -15,6 +15,7 @@ import { getOctokit } from "@actions/github";
  * @param {string} labels A comma-separated list of labels to apply to the PR.
  * @param {string} reviewers A comma-separated list of GitHub usernames to request review from.
  * @param {string} teamReviewers A comma-separated list of GitHub team names to request review from.
+ * @param {string} cwd The current working directory to execute commands in.
  * @returns {boolean} Whether or not the PR was created successfully.
  */
 export const createPullRequest = async (
@@ -26,7 +27,8 @@ export const createPullRequest = async (
   body: string,
   labels?: string,
   reviewers?: string,
-  teamReviewers?: string
+  teamReviewers?: string,
+  cwd?: string
 ) => {
   try {
     const asyncExec = promisify(exec);
@@ -65,8 +67,15 @@ export const createPullRequest = async (
       return true;
     }
 
-    const { stdout: currentBranch } = await asyncExec("git rev-parse HEAD");
-    const { stdout: baseBranch } = await asyncExec(`git rev-parse ${base}`);
+    const options = cwd ? { cwd } : {};
+    const { stdout: currentBranch } = await asyncExec(
+      "git rev-parse HEAD",
+      options
+    );
+    const { stdout: baseBranch } = await asyncExec(
+      `git rev-parse ${base}`,
+      options
+    );
 
     if (currentBranch === baseBranch) {
       console.info("Nothing was committed, no PR will be created.");
