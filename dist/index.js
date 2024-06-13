@@ -40101,7 +40101,7 @@ const validate_environment_1 = __nccwpck_require__(1246);
                 (0, core_1.setFailed)("Missing commit configuration data.");
                 break;
             }
-            yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME || "camperbot", process.env.GH_EMAIL || "camperbot@users.noreply.github.com", process.env.GH_BRANCH, process.env.GH_MESSAGE);
+            yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME || "camperbot", process.env.GH_EMAIL || "camperbot@users.noreply.github.com", process.env.GH_BRANCH, process.env.GH_MESSAGE, process.env.CWD);
             break;
         case "convert-chinese":
             if (!process.env.FILE_PATHS) {
@@ -40147,7 +40147,7 @@ const validate_environment_1 = __nccwpck_require__(1246);
                 (0, core_1.setFailed)("Missing pull request configuration data.");
                 break;
             }
-            (yield (0, pull_request_1.createPullRequest)(process.env.GH_TOKEN, process.env.BRANCH, process.env.REPOSITORY, process.env.BASE, process.env.TITLE, process.env.BODY, process.env.LABELS, process.env.REVIEWERS, process.env.TEAM_REVIEWERS))
+            (yield (0, pull_request_1.createPullRequest)(process.env.GH_TOKEN, process.env.BRANCH, process.env.REPOSITORY, process.env.BASE, process.env.TITLE, process.env.BODY, process.env.LABELS, process.env.REVIEWERS, process.env.TEAM_REVIEWERS, process.env.CWD))
                 ? null
                 : (0, core_1.setFailed)("Failed to create pull request.");
             break;
@@ -40231,16 +40231,18 @@ const util_1 = __nccwpck_require__(3837);
  * @param {string} email The GitHub email to commit from.
  * @param {string} branchName The name of the branch to commit to.
  * @param {string} commitMessage The commit message to use.
+ * @param {string} cwd The current working directory to execute commands in.
  */
-const commitChanges = (username, email, branchName, commitMessage) => __awaiter(void 0, void 0, void 0, function* () {
+const commitChanges = (username, email, branchName, commitMessage, cwd) => __awaiter(void 0, void 0, void 0, function* () {
     const asyncExec = (0, util_1.promisify)(child_process_1.exec);
-    yield asyncExec(`git config --global user.name ${username}`);
-    yield asyncExec(`git config --global user.email ${email}`);
-    yield asyncExec(`git checkout -b ${branchName}`);
-    yield asyncExec("git add .");
+    const options = cwd ? { cwd } : {};
+    yield asyncExec(`git config --global user.name ${username}`, options);
+    yield asyncExec(`git config --global user.email ${email}`, options);
+    yield asyncExec(`git checkout -b ${branchName}`, options);
+    yield asyncExec("git add .", options);
     yield asyncExec("git reset crowdin-config.yml");
-    yield asyncExec(`git diff-index --quiet HEAD || git commit -m "${commitMessage}"`);
-    yield asyncExec(`git push -u origin ${branchName} -f`);
+    yield asyncExec(`git diff-index --quiet HEAD || git commit -m "${commitMessage}"`, options);
+    yield asyncExec(`git push -u origin ${branchName} -f`, options);
 });
 exports.commitChanges = commitChanges;
 
@@ -40645,9 +40647,10 @@ const github_1 = __nccwpck_require__(3695);
  * @param {string} labels A comma-separated list of labels to apply to the PR.
  * @param {string} reviewers A comma-separated list of GitHub usernames to request review from.
  * @param {string} teamReviewers A comma-separated list of GitHub team names to request review from.
+ * @param {string} cwd The current working directory to execute commands in.
  * @returns {boolean} Whether or not the PR was created successfully.
  */
-const createPullRequest = (token, branch, repository, base = "main", title, body, labels, reviewers, teamReviewers) => __awaiter(void 0, void 0, void 0, function* () {
+const createPullRequest = (token, branch, repository, base = "main", title, body, labels, reviewers, teamReviewers, cwd) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const asyncExec = (0, util_1.promisify)(child_process_1.exec);
         const parsedLabels = labels ? labels.split(/,\s+/) : [];
@@ -40676,8 +40679,9 @@ const createPullRequest = (token, branch, repository, base = "main", title, body
             // we want to exit successfully as this isn't a failure condition.
             return true;
         }
-        const { stdout: currentBranch } = yield asyncExec("git rev-parse HEAD");
-        const { stdout: baseBranch } = yield asyncExec(`git rev-parse ${base}`);
+        const options = cwd ? { cwd } : {};
+        const { stdout: currentBranch } = yield asyncExec("git rev-parse HEAD", options);
+        const { stdout: baseBranch } = yield asyncExec(`git rev-parse ${base}`, options);
         if (currentBranch === baseBranch) {
             console.info("Nothing was committed, no PR will be created.");
             return true;
