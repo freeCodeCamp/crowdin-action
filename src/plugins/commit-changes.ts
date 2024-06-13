@@ -25,7 +25,7 @@ export const commitChanges = async (
   await asyncExec(`git config --global user.email ${email}`, options);
   await asyncExec(`git checkout -b ${branchName}`, options);
   await asyncExec("git add .", options);
-  await asyncExec("git reset crowdin-config.yml");
+  await asyncExec("git reset crowdin-config.yml", options);
   await asyncExec(
     `git diff-index --quiet HEAD || git commit -m "${commitMessage}"`,
     options
