@@ -48,7 +48,8 @@ import { validateEnvironment } from "./utils/validate-environment";
         process.env.GH_USERNAME || "camperbot",
         process.env.GH_EMAIL || "camperbot@users.noreply.github.com",
         process.env.GH_BRANCH,
-        process.env.GH_MESSAGE
+        process.env.GH_MESSAGE,
+        process.env.CWD
       );
       break;
     case "convert-chinese":
@@ -110,7 +111,8 @@ import { validateEnvironment } from "./utils/validate-environment";
         process.env.BODY,
         process.env.LABELS,
         process.env.REVIEWERS,
-        process.env.TEAM_REVIEWERS
+        process.env.TEAM_REVIEWERS,
+        process.env.CWD
       ))
         ? null
         : setFailed("Failed to create pull request.");

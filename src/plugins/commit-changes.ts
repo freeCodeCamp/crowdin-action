@@ -9,21 +9,26 @@ import { promisify } from "util";
  * @param {string} email The GitHub email to commit from.
  * @param {string} branchName The name of the branch to commit to.
  * @param {string} commitMessage The commit message to use.
+ * @param {string} cwd The current working directory to execute commands in.
  */
 export const commitChanges = async (
   username: string,
   email: string,
   branchName: string,
-  commitMessage: string
+  commitMessage: string,
+  cwd?: string
 ) => {
   const asyncExec = promisify(exec);
-  await asyncExec(`git config --global user.name ${username}`);
-  await asyncExec(`git config --global user.email ${email}`);
-  await asyncExec(`git checkout -b ${branchName}`);
-  await asyncExec("git add .");
+  const options = cwd ? { cwd } : {};
+
+  await asyncExec(`git config --global user.name ${username}`, options);
+  await asyncExec(`git config --global user.email ${email}`, options);
+  await asyncExec(`git checkout -b ${branchName}`, options);
+  await asyncExec("git add .", options);
   await asyncExec("git reset crowdin-config.yml");
   await asyncExec(
-    `git diff-index --quiet HEAD || git commit -m "${commitMessage}"`
+    `git diff-index --quiet HEAD || git commit -m "${commitMessage}"`,
+    options
   );
-  await asyncExec(`git push -u origin ${branchName} -f`);
+  await asyncExec(`git push -u origin ${branchName} -f`, options);
 };
