@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
 
     steps:
       - name: Checkout Source Files
@@ -26,9 +26,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: latest
 
       - name: Install Dependencies
         run: pnpm i
@@ -44,6 +44,6 @@ jobs:
 
       - name: Run Tests
         run: pnpm run test
-        
+
       - name: Check dist is up-to-date
         run: git diff --exit-code HEAD

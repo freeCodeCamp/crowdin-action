@@ -1,9 +1,12 @@
-name: "Crowdin Integration Tools"
-description: "A collection of tools to manage freeCodeCamp's integrations with Crowdin."
-
+name: Crowdin Integration Tools
+description: A collection of tools to manage freeCodeCamp's integrations with Crowdin
+author: freeCodeCamp
+branding:
+  icon: activity
+  color: blue
 runs:
-  using: "node16"
-  main: "dist/index.js"
+  using: node20
+  main: dist/index.js
 env:
   # These are required for the action to run.
   CROWDIN_PERSONAL_TOKEN:
