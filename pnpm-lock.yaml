@@ -30,7 +30,7 @@ devDependencies:
     version: 9.0.13
   '@types/node':
     specifier: ^16.11.12
-    version: 16.18.74
+    version: 16.18.108
   '@types/node-fetch':
     specifier: ^2.5.12
     version: 2.6.11
@@ -280,7 +280,7 @@ packages:
   /@types/fs-extra@9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 16.18.74
+      '@types/node': 16.18.108
     dev: true
 
   /@types/json-schema@7.0.15:
@@ -294,12 +294,12 @@ packages:
   /@types/node-fetch@2.6.11:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
-      '@types/node': 16.18.74
+      '@types/node': 16.18.108
       form-data: 4.0.0
     dev: true
 
-  /@types/node@16.18.74:
-    resolution: {integrity: sha512-eEn8RkzZFcT0gb8qyi0CcfSOQnLE+NbGLIIaxGGmjn/N35v/C3M8ohxcpSlNlCv+H8vPpMGmrGDdCkzr8xu2tQ==}
+  /@types/node@16.18.108:
+    resolution: {integrity: sha512-fj42LD82fSv6yN9C6Q4dzS+hujHj+pTv0IpRR3kI20fnYeS0ytBpjFO9OjmDowSPPt4lNKN46JLaKbCyP+BW2A==}
     dev: true
 
   /@types/semver@7.5.6:
