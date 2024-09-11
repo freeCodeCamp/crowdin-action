@@ -17,9 +17,9 @@ jobs:
         node-version: [16.x]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       - name: Use Node.js v${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@7c12f8017d5436eb855f1ed4399f037a36fbd9e8 # v2
         with:
           node-version: ${{ matrix.node-version }}
       - name: Setup pnpm
@@ -31,8 +31,8 @@ jobs:
       - name: Build files
         run: pnpm run build
       - name: Setup CodeQL
-        uses: github/codeql-action/init@v1
+        uses: github/codeql-action/init@231aa2c8a89117b126725a0e11897209b7118144 # v1
         with:
           languages: ${{ matrix.language }}
       - name: Perform Analysis
-        uses: github/codeql-action/analyze@v1
+        uses: github/codeql-action/analyze@231aa2c8a89117b126725a0e11897209b7118144 # v1
