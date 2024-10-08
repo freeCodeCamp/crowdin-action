@@ -1,18 +1,18 @@
-import { exec } from "child_process";
-import { promisify } from "util";
+import { readdir } from "fs/promises";
 
 import { CrowdinFilesHelper } from "../utils/files";
 
-const getOutputFromShellCommand = async (command: string) => {
-  try {
-    const awaitExec = promisify(exec);
-    const { stdout } = await awaitExec(command);
-    return stdout;
-  } catch (error) {
-    console.log("Error");
-    console.log(command);
-    console.log(JSON.stringify(error, null, 2));
+const recursiveWalk = async (path: string, files: string[] = []) => {
+  const entities = await readdir(path, { withFileTypes: true });
+  for (const entity of entities) {
+    const fullPath = `${path}/${entity.name}`;
+    if (entity.isDirectory()) {
+      await recursiveWalk(fullPath, files);
+    } else {
+      files.push(fullPath);
+    }
   }
+  return files;
 };
 
 /**
@@ -32,9 +32,7 @@ export const removeDeletedFiles = async (
   if (crowdinFiles && crowdinFiles.length) {
     let totalFiles: string[] = [];
     for (const path of paths) {
-      const shellCommand = `find ${path} -name \\*.*`;
-      const localFiles = await getOutputFromShellCommand(shellCommand);
-      const localFilesArray = localFiles?.split("\n");
+      const localFilesArray = await recursiveWalk(path);
       if (localFilesArray?.length) {
         totalFiles = totalFiles.concat(localFilesArray);
       }
