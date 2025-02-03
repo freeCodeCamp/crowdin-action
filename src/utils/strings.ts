@@ -36,6 +36,7 @@ const isReservedHeading = (context: string, str: string) => {
     "quiz",
     "quizzes",
     "answer",
+    "transcript",
   ];
   const captureGroupString = `(${reservedHeadings.join("|")})`;
   const regex = new RegExp(`--${captureGroupString}--`);
