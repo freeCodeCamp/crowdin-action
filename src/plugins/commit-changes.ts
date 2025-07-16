@@ -23,7 +23,7 @@ export const commitChanges = async (
   await asyncExec("git add .");
   await asyncExec("git reset crowdin-config.yml");
   await asyncExec(
-    `git diff-index --quiet HEAD || git commit -m "${commitMessage}"`
+    `git diff-index --quiet HEAD || git commit --quiet -m "${commitMessage}"`
   );
   await asyncExec(`git push -u origin ${branchName} -f`);
 };
