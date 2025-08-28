@@ -8,13 +8,13 @@
 files:
   [
     {
-      "source": "/curriculum/challenges/english/**/*.md",
-      "translation": "/curriculum/challenges/%language%/**/%original_file_name%",
+      "source": "/curriculum/challenges/english/blocks/**/*.md",
+      "translation": "/curriculum/challenges/%language%/blocks/**/%original_file_name%",
       "type": "fm_md",
     },
     {
-      "source": "/curriculum/challenges/english/00-certifications/**/*.yml",
-      "translation": "/curriculum/challenges/%language%/00-certifications/**/%original_file_name%",
+      "source": "/curriculum/challenges/english/certifications/*.yml",
+      "translation": "/curriculum/challenges/%language%/certifications/%original_file_name%",
     },
     {
       "source": "/curriculum/dictionaries/english/comments.json",
