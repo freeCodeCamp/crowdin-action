@@ -32,7 +32,7 @@ importers:
         version: 9.0.13
       '@types/node':
         specifier: ^20.16.5
-        version: 20.19.18
+        version: 20.19.19
       '@types/node-fetch':
         specifier: ^2.5.12
         version: 2.6.13
@@ -208,8 +208,8 @@ packages:
   '@types/node-fetch@2.6.13':
     resolution: {integrity: sha512-QGpRVpzSaUs30JBSGPjOg4Uveu384erbHBoT1zeONvyCfwQxIkUshLAOqN/k9EjGviPRmWTTe6aH2qySWKTVSw==}
 
-  '@types/node@20.19.18':
-    resolution: {integrity: sha512-KeYVbfnbsBCyKG8e3gmUqAfyZNcoj/qpEbHRkQkfZdKOBrU7QQ+BsTdfqLSWX9/m1ytYreMhpKvp+EZi3UFYAg==}
+  '@types/node@20.19.19':
+    resolution: {integrity: sha512-pb1Uqj5WJP7wrcbLU7Ru4QtA0+3kAXrkutGiD26wUKzSMgNNaPARTUDQmElUXp64kh3cWdou3Q0C7qwwxqSFmg==}
 
   '@types/semver@7.5.6':
     resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
@@ -1521,7 +1521,7 @@ snapshots:
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 20.19.18
+      '@types/node': 20.19.19
 
   '@types/json-schema@7.0.15': {}
 
@@ -1529,10 +1529,10 @@ snapshots:
 
   '@types/node-fetch@2.6.13':
     dependencies:
-      '@types/node': 20.19.18
+      '@types/node': 20.19.19
       form-data: 4.0.4
 
-  '@types/node@20.19.18':
+  '@types/node@20.19.19':
     dependencies:
       undici-types: 6.21.0
 
