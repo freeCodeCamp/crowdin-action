@@ -8,8 +8,12 @@ import { makeRequest } from "./make-request";
 
 const isReservedHeading = (context: string, str: string) => {
   const reservedHeadings = [
+    "after-all",
+    "after-each",
     "after-user-code",
     "answers",
+    "before-all",
+    "before-each",
     "before-user-code",
     "description",
     "fcc-editable-region",
