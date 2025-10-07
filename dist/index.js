@@ -43377,8 +43377,10 @@ const auth_header_1 = __nccwpck_require__(3542);
 const make_request_1 = __nccwpck_require__(5626);
 const isReservedHeading = (context, str) => {
     const reservedHeadings = [
+        "after-all",
         "after-user-code",
         "answers",
+        "before-all",
         "before-user-code",
         "description",
         "fcc-editable-region",
