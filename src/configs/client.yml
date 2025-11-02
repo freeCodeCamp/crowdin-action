@@ -8,11 +8,11 @@
 files:
   [
     {
-      "source": "/client/i18n/locales/english/intro.json",
-      "translation": "/client/i18n/locales/%language%/%original_file_name%",
+      "source": "/apps/client/i18n/locales/english/intro.json",
+      "translation": "/apps/client/i18n/locales/%language%/%original_file_name%",
     },
     {
-      "source": "/client/i18n/locales/english/translations.json",
-      "translation": "/client/i18n/locales/%language%/%original_file_name%",
+      "source": "/apps/client/i18n/locales/english/translations.json",
+      "translation": "/apps/client/i18n/locales/%language%/%original_file_name%",
     },
   ]
