@@ -12,6 +12,10 @@ files:
       "translation": "/client/i18n/locales/%language%/%original_file_name%",
     },
     {
+      "source": "/client/i18n/locales/english/blocks-intro.json",
+      "translation": "/client/i18n/locales/%language%/%original_file_name%",
+    },
+    {
       "source": "/client/i18n/locales/english/translations.json",
       "translation": "/client/i18n/locales/%language%/%original_file_name%",
     },
